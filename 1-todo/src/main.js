@@ -37,10 +37,11 @@ $( document ).ready(function() {
 function TodoListService() {
 
     var listId = "todolist";
+    var listTodos = readStorage();
 
     this.addItemToList = addItemToList;
     this.removeItemFromList = removeItemFromList;
-    this.listTodos = readStorage();
+    this.listTodos = listTodos;
 
     function readStorage() {
         try {
@@ -54,7 +55,7 @@ function TodoListService() {
 
     function storeList() {
         try {
-            localStorage.setItem(listId, this.listTodos);
+            localStorage.setItem(listId, listTodos);
         } catch(e) {
             console.error(e);
         }
@@ -68,7 +69,7 @@ function TodoListService() {
     function removeItemFromList(item) {
         const index = this.listTodos.indexOf(item);
         if (index > -1) {
-            this.listTodos.splice(index, 1);
+            listTodos.splice(index, 1);
             storeList();
         }
     }
