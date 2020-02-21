@@ -4,13 +4,13 @@
   "description": "todo",
   "main": "index.js",
   "scripts": {
-    "start": "live-server src --mount=/modules:./node_modules",
+    "start": "live-server src --port=8989  --mount=/modules:./node_modules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/jquery": "^3.3.32",
+    "@types/jquery": "~3.3.32",
     "live-server": "^1.2.1"
   },
   "dependencies": {
