@@ -1,78 +1,119 @@
-const init = function(){
-    console.log("%cInitialised!", 'background: #ff0000; color: #bada55; font-size: 2rem');
-}
-
-init();
-
-$( document ).ready(function() {
-
-    // load todoList
-    var todoService = new TodoListService();
-    var existingTodos = todoService.listTodos;
-    existingTodos.forEach(function (item, index) {
-        $("aside.todo-items").append("<div><p>"+item+"</p><button>Remove</button></div>");
-      });
-
-    // add item to list
-    $("input.todo-title").keypress((e) => {
-        var key = e.which;
-        var value = e.target.value;
-        if(key == 13 && value) { // the enter key code
-            $("aside.todo-items").append("<div><p>"+value+"</p><button>Remove</button></div>");
-            $("input.todo-title").val('');
-            todoService.addItemToList(value);
-            return false;  
-        }
-
-    });
-
-    // remove items from list
-    $("aside.todo-items").on('click', 'button', function(e){
-        todoService.removeItemFromList($(this).prev().text());
-        $(this).parent().remove();
-     });
+// Waiting for jQuery to initialize
+$(document).ready(function() {
+  // Initialize Class (Component)
+  new TodoListService($);
 });
 
+// Declaring our component class
+class TodoListService {
+  // Declaring class level properties
+  LIST_ID = "todolist";
+  TODO_CONTAINER = "aside.todo-items";
+  TODO_INPUT = "input.todo-title";
+  existingTodos;
+  jQuery;
 
-function TodoListService() {
+  constructor(jQuery) {
+    this.jQuery = jQuery;
+    this.render();
+    this.onEnterInit();
+    this.onRemoveInit();
+  }
 
-    var listId = "todolist";
-    var listTodos = readStorage();
+  // Rendering function for updating view
+  render() {
+    // localStorage read
+    this.existingTodos = this.readStorage(this.LIST_ID);
 
-    this.addItemToList = addItemToList;
-    this.removeItemFromList = removeItemFromList;
-    this.listTodos = listTodos;
+    // replacing whole html content with result of array iteration
+    this.jQuery(this.TODO_CONTAINER).html(
+      this.existingTodos.map(item => {
+        return "<div><p>" + item + "</p><button>Remove</button></div>";
+      })
+    );
+  }
 
-    function readStorage() {
-        try {
-            var list = localStorage.getItem(listId).split(",");
-            return list;
-        } catch(e) {
-            console.error(e);
-            return  [];
-        }
+  /**
+   * Used to add new items to a list
+   *
+   * @param {string} item new item value
+   */
+  addItemToList(item) {
+    this.existingTodos.push(item);
+    this.storeList(this.LIST_ID, this.existingTodos);
+    this.render();
+  }
+
+  /**
+   * Used to read items from LocalStorage
+   *
+   * @param {*} listId
+   */
+
+  readStorage(listId) {
+    if (localStorage.length) {
+      return localStorage.getItem(listId)?.split(",") ?? [];
+    } else {
+      localStorage.setItem(listId, []);
+      return [];
     }
+  }
 
-    function storeList() {
-        try {
-            localStorage.setItem(listId, listTodos);
-        } catch(e) {
-            console.error(e);
-        }
+  /**
+   *
+   * Used to store an array to the LocalStorage
+   *
+   * @param {*} listId localStorage key
+   * @param {*} toDos array of todos
+   */
+  storeList(listId, toDos) {
+    try {
+      localStorage.setItem(listId, toDos);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    function addItemToList(item) {
-        this.listTodos.push(item); 
-        storeList();
+  /**
+   *
+   * Used to remove one item from the local storage
+   *
+   * @param {*} item value of an array item
+   */
+  removeItemFromList(item) {
+    const index = this.existingTodos.indexOf(item);
+    if (index > -1) {
+      this.existingTodos.splice(index, 1);
+      this.storeList(this.LIST_ID, this.existingTodos);
     }
+    this.render();
+  }
 
-    function removeItemFromList(item) {
-        const index = this.listTodos.indexOf(item);
-        if (index > -1) {
-            listTodos.splice(index, 1);
-            storeList();
-        }
-    }
+  /**
+   * Binds onEnter event to the component input
+   */
+  onEnterInit() {
+    this.jQuery(this.TODO_INPUT).keypress(e => {
+      const key = e.which;
+      const value = e.target.value;
+      if (key == 13 && value) {
+        $(this.TODO_INPUT).val("");
+        this.addItemToList(value);
+        return false;
+      }
+    });
+  }
 
+  /**
+   * Binds onRemove event to the component input
+   */
+  onRemoveInit() {
+    this.jQuery(this.TODO_CONTAINER).on("click", "button", e => {
+      this.removeItemFromList(
+        this.jQuery(e.target)
+          .prev()
+          .text()
+      );
+    });
+  }
 }
-
