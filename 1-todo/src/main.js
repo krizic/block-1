@@ -10,6 +10,7 @@ class TodoListService {
   // Declaring class level properties
   LIST_ID = "todolist";
   COUNT_ID = "#testcount";
+  SORT_ID = "#sorting";
   TODO_CONTAINER = "aside.todo-items";
   TODO_INPUT = "input.todo-title";
   // array of objets
@@ -162,12 +163,9 @@ class TodoListService {
    * Binds onRemove event to the component input
    */
   onRemoveInit() {
-
-  }
-
-    /**
-   * Binds onDone event to the component input
-   */
+    this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
+      this.removeItemFromList(
+        this.jQuery(e.target)COUNT_ID
   onDoneInit() {
     this.jQuery(this.TODO_CONTAINER).on("click", "button#done", e => {
       this.doneItemFromList(
@@ -181,7 +179,7 @@ class TodoListService {
    * Binds onSort event to the component input
    */
   onSortInit() {
-    this.jQuery(this.COUNT_ID).click( e => {
+    this.jQuery(this.SORT_ID).click( e => {
       console.log(e);
       this.sortTasksByDate(true)
     });
