@@ -1,3 +1,4 @@
+
 // Waiting for jQuery to initialize
 $(document).ready(function() {
   // Initialize Class (Component)
@@ -10,25 +11,40 @@ class TodoListService {
   LIST_ID = "todolist";
   TODO_CONTAINER = "aside.todo-items";
   TODO_INPUT = "input.todo-title";
+  // array of objets
   existingTodos;
   jQuery;
+  StatusEnum = {
+    DONE : 0,
+    TODO : 1
+  };
 
   constructor(jQuery) {
     this.jQuery = jQuery;
     this.render();
     this.onEnterInit();
     this.onRemoveInit();
+    this.onDoneInit();
   }
 
   // Rendering function for updating view
   render() {
+
     // localStorage read
     this.existingTodos = this.readStorage(this.LIST_ID);
 
     // replacing whole html content with result of array iteration
     this.jQuery(this.TODO_CONTAINER).html(
       this.existingTodos.map(item => {
-        return "<div><p>" + item + "</p><button>Remove</button></div>";
+        const title = item.title;
+        const id = item.id;
+        const ageInMin = Math.round((Date.now() - item.creationDate) / (1000 * 60)) + " min";
+        return `<div id= ${id}>
+                  <p>${title}</p><p>${ageInMin}</p>
+                  <p><span class='${ "status status".concat(item.status) }' ></p>
+                  <button id='remove' >Remove</button>
+                  <button id='done' class='${ "status".concat(item.status) }'>Done</button>
+                </div>`;
       })
     );
   }
@@ -39,7 +55,13 @@ class TodoListService {
    * @param {string} item new item value
    */
   addItemToList(item) {
-    this.existingTodos.push(item);
+    const itemTask = {
+      id: Date.now(),
+      creationDate : Date.now(),
+      title: item,
+      status:this.StatusEnum.TODO
+    }
+    this.existingTodos.push(itemTask);
     this.storeList(this.LIST_ID, this.existingTodos);
     this.render();
   }
@@ -52,7 +74,8 @@ class TodoListService {
 
   readStorage(listId) {
     if (localStorage.length) {
-      return localStorage.getItem(listId)?.split(",") ?? [];
+      const arrayOfTask = JSON.parse(localStorage.getItem(listId) ?? []);
+      return arrayOfTask;
     } else {
       localStorage.setItem(listId, []);
       return [];
@@ -68,10 +91,15 @@ class TodoListService {
    */
   storeList(listId, toDos) {
     try {
-      localStorage.setItem(listId, toDos);
+      localStorage.setItem(listId, JSON.stringify(toDos));
     } catch (e) {
       console.error(e);
     }
+  }
+
+  findIndexOfTask(id) {
+    return this.existingTodos.map(function(e) { return e.id; }).indexOf(parseInt(id));
+
   }
 
   /**
@@ -80,14 +108,24 @@ class TodoListService {
    *
    * @param {*} item value of an array item
    */
-  removeItemFromList(item) {
-    const index = this.existingTodos.indexOf(item);
+  removeItemFromList(id) {
+    const index = this.findIndexOfTask(id);
     if (index > -1) {
       this.existingTodos.splice(index, 1);
       this.storeList(this.LIST_ID, this.existingTodos);
     }
     this.render();
   }
+
+  doneItemFromList(id) {
+    const index = this.findIndexOfTask(id);
+    if (index > -1) {
+      this.existingTodos[index].status = this.StatusEnum.DONE;
+      this.storeList(this.LIST_ID, this.existingTodos);
+    }
+    this.render();
+  }
+
 
   /**
    * Binds onEnter event to the component input
@@ -108,12 +146,25 @@ class TodoListService {
    * Binds onRemove event to the component input
    */
   onRemoveInit() {
-    this.jQuery(this.TODO_CONTAINER).on("click", "button", e => {
+    this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
       this.removeItemFromList(
         this.jQuery(e.target)
-          .prev()
-          .text()
+          .parent().attr('id')
       );
     });
   }
+
+    /**
+   * Binds onDone event to the component input
+   */
+  onDoneInit() {
+    this.jQuery(this.TODO_CONTAINER).on("click", "button#done", e => {
+      this.doneItemFromList(
+        this.jQuery(e.target)
+          .parent().attr('id')
+      );
+    });
+  }
+
+
 }
