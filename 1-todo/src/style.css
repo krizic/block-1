@@ -33,6 +33,7 @@
 .tool-box > div:last-child{
     border: none;
 }
+
 .filter {
     flex: 3;
 }

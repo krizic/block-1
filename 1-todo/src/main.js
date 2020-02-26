@@ -41,25 +41,25 @@ class TodoListService {
 
   // Rendering function for updating view
   render() {
-
     // replacing whole html content with result of array iteration
     this.jQuery(this.TODO_CONTAINER).html(
       this.existingTodos.map(item => {
         const title = item.title;
         const id = item.id;
-        const ageInMin = Math.round((Date.now() - item.creationDate) / (1000 * 60)) + " min";
+        const ageInMin =
+          Math.round((Date.now() - item.creationDate) / (1000 * 60)) + " min";
         return `<div id= ${id}>
                   <p>${title}</p><p>${ageInMin}</p>
-                  <p><span class='${ "status status".concat(item.status) }' ></p>
+                  <p><span class='${"status status".concat(item.status)}' ></p>
                   <button id='remove' >Remove</button>
-                  <button id='done' class='${ "status".concat(item.status) }'>Done</button>
+                  <button id='done' class='${"status".concat(
+                    item.status
+                  )}'>Done</button>
                 </div>`;
       })
     );
 
     this.jQuery(this.COUNT_ID).text(this.existingTodos.length);
-
-
   }
 
   /**
@@ -68,13 +68,12 @@ class TodoListService {
    * @param {string} item new item value
    */
   addItemToList(item) {
-    
     const itemTask = {
       id: this.uuidv4(),
-      creationDate : Date.now(),
+      creationDate: Date.now(),
       title: item,
-      status:this.StatusEnum.TODO
-    }
+      status: this.StatusEnum.TODO
+    };
     this.existingTodos.push(itemTask);
     this.storeList(this.LIST_ID, this.existingTodos);
     this.render();
@@ -111,8 +110,11 @@ class TodoListService {
   }
 
   findIndexOfTask(id) {
-    return this.existingTodos.map(function(e) { return e.id; }).indexOf(parseInt(id));
-
+    return this.existingTodos
+      .map(function(e) {
+        return e.id;
+      })
+      .indexOf(parseInt(id));
   }
 
   /**
@@ -141,14 +143,12 @@ class TodoListService {
 
   sortTasksByDate(asc) {
     const direction = asc == true ? 1 : -1;
-    this.existingTodos.sort( (a , b) => {
+    this.existingTodos.sort((a, b) => {
       return (b.creationDate - a.creationDate) * direction;
     });
     this.render();
     this.sortDesc = !this.sortDesc;
-    
   }
-
 
   /**
    * Binds onEnter event to the component input
@@ -165,18 +165,6 @@ class TodoListService {
     });
   }
 
-   /**
-   * Binds onRemove event to the component input
-   */
-  onRemoveInit() {
-    this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
-      this.removeItemFromList(
-        this.jQuery(e.target)
-          .parent().attr('id')
-      );
-    });
-  }
-
     /**
    * Binds onDone event to the component input
    */
@@ -184,18 +172,18 @@ class TodoListService {
     this.jQuery(this.TODO_CONTAINER).on("click", "button#done", e => {
       this.doneItemFromList(
         this.jQuery(e.target)
-          .parent().attr('id')
+          .parent()
+          .attr("id")
       );
     });
   }
 
-      /**
+  /**
    * Binds onSort event to the component input
    */
   onSortInit() {
-    this.jQuery(this.SORT_ID).click( e => {
-      this.sortTasksByDate(this.sortDesc)
+    this.jQuery(this.SORT_ID).click(e => {
+      this.sortTasksByDate(this.sortDesc);
     });
   }
-
 }
