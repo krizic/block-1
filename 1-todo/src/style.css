@@ -1,5 +1,5 @@
 #todo-container {
-    box-shadow: 2px 2px 2px rgba(22,22,22, 0.2);
+    box-shadow: 0 5px  15px 10px  rgba(22,22,22, 0.2);
     margin: 0 auto 0 auto;
     width: 350px;
 }
@@ -16,6 +16,12 @@
 
 #todo-container .todo-items > div {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    align-items: flex-end;
     border: 1px solid rgba(0,0,0,.2)
+}
+
+footer {
+    background-color: rgba(22,22,22, 0.2);
 }
