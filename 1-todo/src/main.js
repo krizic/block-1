@@ -11,6 +11,7 @@ class TodoListService {
   LIST_ID = "todolist";
   COUNT_ID = "#testcount";
   SORT_ID = "#sorting";
+  sortDesc = false;
   TODO_CONTAINER = "aside.todo-items";
   TODO_INPUT = "input.todo-title";
   // array of objets
@@ -25,17 +26,21 @@ class TodoListService {
   constructor(jQuery, uuidv4) {
     this.jQuery = jQuery;
     this.uuidv4 = uuidv4;
+    this.loadFromStorage();
     this.render();
     this.onEnterInit();
     this.onRemoveInit();
     this.onDoneInit();
+    this.onSortInit();
+  }
+
+  loadFromStorage() {
+    // localStorage read
+    this.existingTodos = this.readStorage(this.LIST_ID);
   }
 
   // Rendering function for updating view
   render() {
-
-    // localStorage read
-    this.existingTodos = this.readStorage(this.LIST_ID);
 
     // replacing whole html content with result of array iteration
     this.jQuery(this.TODO_CONTAINER).html(
@@ -80,25 +85,10 @@ class TodoListService {
    *
    * @param {*} listId
    */
-
   readStorage(listId) {
-    if (localStorage.length) {
+    if (localStorage.length && localStorage.getItem(listId)) {
       const arrayOfTask = JSON.parse(localStorage.getItem(listId) ?? []);
-      return  /**
-      * Binds onRemove event to the component input
-      */
-     onRemoveInit() {
-       this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
-         this.removeItemFromList(
-           this.jQuery(e.target)COUNT_ID
-     onDoneInit() {
-       this.jQuery(this.TODO_CONTAINER).on("click", "button#done", e => {
-         this.doneItemFromList(
-           this.jQuery(e.target)
-             .parent().attr('id')
-         );
-       });
-     }arrayOfTask;
+      return arrayOfTask;
     } else {
       localStorage.setItem(listId, []);
       return [];
@@ -151,10 +141,12 @@ class TodoListService {
 
   sortTasksByDate(asc) {
     const direction = asc == true ? 1 : -1;
-    this.existingTodos.sort( (a , b) => 
-      (
-        b.creationDate - a.creationDate) * direction
-      );
+    this.existingTodos.sort( (a , b) => {
+      return (b.creationDate - a.creationDate) * direction;
+    });
+    this.render();
+    this.sortDesc = !this.sortDesc;
+    
   }
 
 
@@ -202,8 +194,7 @@ class TodoListService {
    */
   onSortInit() {
     this.jQuery(this.SORT_ID).click( e => {
-      console.log(e);
-      this.sortTasksByDate(true)
+      this.sortTasksByDate(this.sortDesc)
     });
   }
 
