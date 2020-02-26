@@ -2,25 +2,28 @@
 // Waiting for jQuery to initialize
 $(document).ready(function() {
   // Initialize Class (Component)
-  new TodoListService($);
+  new TodoListService($, uuidv4);
 });
 
 // Declaring our component class
 class TodoListService {
   // Declaring class level properties
   LIST_ID = "todolist";
+  COUNT_ID = "#testcount";
   TODO_CONTAINER = "aside.todo-items";
   TODO_INPUT = "input.todo-title";
   // array of objets
   existingTodos;
   jQuery;
+  uuidv4;
   StatusEnum = {
     DONE : 0,
     TODO : 1
   };
 
-  constructor(jQuery) {
+  constructor(jQuery, uuidv4) {
     this.jQuery = jQuery;
+    this.uuidv4 = uuidv4;
     this.render();
     this.onEnterInit();
     this.onRemoveInit();
@@ -47,6 +50,10 @@ class TodoListService {
                 </div>`;
       })
     );
+
+    this.jQuery(this.COUNT_ID).text(this.existingTodos.length);
+
+
   }
 
   /**
@@ -55,8 +62,9 @@ class TodoListService {
    * @param {string} item new item value
    */
   addItemToList(item) {
+    
     const itemTask = {
-      id: Date.now(),
+      id: this.uuidv4(),
       creationDate : Date.now(),
       title: item,
       status:this.StatusEnum.TODO
@@ -126,6 +134,14 @@ class TodoListService {
     this.render();
   }
 
+  sortTasksByDate(asc) {
+    const direction = asc == true ? 1 : -1;
+    this.existingTodos.sort( (a , b) => 
+      (
+        b.creationDate - a.creationDate) * direction
+      );
+  }
+
 
   /**
    * Binds onEnter event to the component input
@@ -146,12 +162,7 @@ class TodoListService {
    * Binds onRemove event to the component input
    */
   onRemoveInit() {
-    this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
-      this.removeItemFromList(
-        this.jQuery(e.target)
-          .parent().attr('id')
-      );
-    });
+
   }
 
     /**
@@ -163,6 +174,16 @@ class TodoListService {
         this.jQuery(e.target)
           .parent().attr('id')
       );
+    });
+  }
+
+      /**
+   * Binds onSort event to the component input
+   */
+  onSortInit() {
+    this.jQuery(this.COUNT_ID).click( e => {
+      console.log(e);
+      this.sortTasksByDate(true)
     });
   }
 

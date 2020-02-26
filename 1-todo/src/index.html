@@ -1,18 +1,33 @@
 <html>
-    <head>
-        <title>todo</title>
-        <link rel="stylesheet" href="style.css">
-        <script src="/modules/jquery/dist/jquery.slim.min.js"></script>
-        <script src="main.js"></script>
-    </head>
-    <body>
-        <section id="todo-container">
-            <input type="text" name="" class="todo-title" onkeydown="">
-            <aside class="todo-items">
-            </aside>
-            <footer>
-                footer
-            </footer>
-        </section>
-    </body>
+  <head>
+    <title>todo</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="/modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="/modules/uuid/dist/umd/uuidv4.min.js"></script>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <section id="todo-container">
+      <input type="text" name="" class="todo-title" onkeydown="" />
+      <div class="tool-box">
+        <div class="filter">
+          <input type="radio" id="radio_1" class="todo-radio" value="done" />
+          <label>Done</label>
+          <input type="radio" id="radio_2" class="todo-radio" value="todo" />
+          <label>Todo</label>
+        </div>
+        <div class="sort">
+          <input type="button" value="sort" />
+        </div>
+        <div class="count">
+            <p id="testcount">1</p>
+        </div>
+      </div>
+      <aside class="todo-items"></aside>
+      <p id="testcount"></p>
+      <footer>
+        footer
+      </footer>
+    </section>
+  </body>
 </html>
