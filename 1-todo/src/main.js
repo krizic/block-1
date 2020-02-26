@@ -84,7 +84,21 @@ class TodoListService {
   readStorage(listId) {
     if (localStorage.length) {
       const arrayOfTask = JSON.parse(localStorage.getItem(listId) ?? []);
-      return arrayOfTask;
+      return  /**
+      * Binds onRemove event to the component input
+      */
+     onRemoveInit() {
+       this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
+         this.removeItemFromList(
+           this.jQuery(e.target)COUNT_ID
+     onDoneInit() {
+       this.jQuery(this.TODO_CONTAINER).on("click", "button#done", e => {
+         this.doneItemFromList(
+           this.jQuery(e.target)
+             .parent().attr('id')
+         );
+       });
+     }arrayOfTask;
     } else {
       localStorage.setItem(listId, []);
       return [];
@@ -159,13 +173,21 @@ class TodoListService {
     });
   }
 
-  /**
+   /**
    * Binds onRemove event to the component input
    */
   onRemoveInit() {
     this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
       this.removeItemFromList(
-        this.jQuery(e.target)COUNT_ID
+        this.jQuery(e.target)
+          .parent().attr('id')
+      );
+    });
+  }
+
+    /**
+   * Binds onDone event to the component input
+   */
   onDoneInit() {
     this.jQuery(this.TODO_CONTAINER).on("click", "button#done", e => {
       this.doneItemFromList(
