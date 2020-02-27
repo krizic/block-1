@@ -27,7 +27,7 @@ class TodoListService {
     this.jQuery = jQuery;
     this.uuidv4 = uuidv4;
     this.loadFromStorage();
-    this.render();
+    this.render(this.existingTodos);
     this.onEnterInit();
     this.onRemoveInit();
     this.onDoneInit();
@@ -40,21 +40,19 @@ class TodoListService {
   }
 
   // Rendering function for updating view
-  render() {
+  render(todosList) {
     // replacing whole html content with result of array iteration
     this.jQuery(this.TODO_CONTAINER).html(
-      this.existingTodos.map(item => {
+        todosList.map(item => {
         const title = item.title;
         const id = item.id;
         const ageInMin =
           Math.round((Date.now() - item.creationDate) / (1000 * 60)) + " min";
-        return `<div id= ${id}>
+        return `<div id=${id} class='${"status".concat(item.status)}' >
                   <p>${title}</p><p>${ageInMin}</p>
-                  <p><span class='${"status status".concat(item.status)}' ></p>
+                  <p><span class='status'></p>
                   <button id='remove' >Remove</button>
-                  <button id='done' class='${"status".concat(
-                    item.status
-                  )}'>Done</button>
+                  <button id='done'>Done</button>
                 </div>`;
       })
     );
@@ -76,7 +74,7 @@ class TodoListService {
     };
     this.existingTodos.push(itemTask);
     this.storeList(this.LIST_ID, this.existingTodos);
-    this.render();
+    this.render(this.existingTodos);
   }
 
   /**
@@ -114,7 +112,7 @@ class TodoListService {
       .map(function(e) {
         return e.id;
       })
-      .indexOf(parseInt(id));
+      .indexOf(id);
   }
 
   /**
@@ -129,7 +127,7 @@ class TodoListService {
       this.existingTodos.splice(index, 1);
       this.storeList(this.LIST_ID, this.existingTodos);
     }
-    this.render();
+    this.render(this.existingTodos);
   }
 
   doneItemFromList(id) {
@@ -138,15 +136,16 @@ class TodoListService {
       this.existingTodos[index].status = this.StatusEnum.DONE;
       this.storeList(this.LIST_ID, this.existingTodos);
     }
-    this.render();
+    this.render(this.existingTodos);
   }
 
   sortTasksByDate(asc) {
     const direction = asc == true ? 1 : -1;
-    this.existingTodos.sort((a, b) => {
+    let sortedTodos = this.existingTodos.slice();
+    sortedTodos.sort((a, b) => {
       return (b.creationDate - a.creationDate) * direction;
     });
-    this.render();
+    this.render(sortedTodos);
     this.sortDesc = !this.sortDesc;
   }
 
@@ -174,6 +173,18 @@ class TodoListService {
         this.jQuery(e.target)
           .parent()
           .attr("id")
+      );
+    });
+  }
+
+  /**
+   * Binds onRemove event to the component input
+   */
+  onRemoveInit() {
+    this.jQuery(this.TODO_CONTAINER).on("click", "button#remove", e => {
+      this.removeItemFromList(
+        this.jQuery(e.target)
+          .parent().attr('id')
       );
     });
   }

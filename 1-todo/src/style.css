@@ -82,7 +82,7 @@
    margin: 0 0.5rem 0.5rem 0;
 }
 
-span.status {
+aside.todo-items div span.status {
     border-radius: 50%;
     display: inline-block;
     height: 13px;
@@ -91,17 +91,17 @@ span.status {
     margin: 0 auto;
 }
 
-span.status0 {
+aside.todo-items div.status0 span {
     background-color: blue;
     margin: 0 0.5rem;
 }
 
-span.status1 {
+aside.todo-items div.status1 span {
     background-color: orange;
     margin: 0 0.5rem;
 }
 
-button.status0 {
+aside.todo-items div.status0 button#done {
     display: none;
 }
 
