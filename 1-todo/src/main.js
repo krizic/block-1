@@ -7,12 +7,12 @@ $(document).ready(function() {
 // Declaring our component class
 class TodoListService {
   // Declaring class level properties
-  LIST_ID = 'todolist';
-  COUNT_ID = '#testcount';
-  SORT_ID = '#sorting';
+  LIST_ID = "todolist";
+  COUNT_ID = "#testcount";
+  SORT_ID = "#sorting";
   sortDesc = false;
-  TODO_CONTAINER = 'aside.todo-items';
-  TODO_INPUT = 'input.todo-title';
+  TODO_CONTAINER = "ul.todo-items";
+  TODO_INPUT = "input.todo-title";
   RADIO_SELECT = "input[type='radio']";
   // array of objets
   existingTodos;
@@ -33,6 +33,7 @@ class TodoListService {
     this.onDoneInit();
     this.onSortInit();
     this.onRadioInit();
+    this.onDescriptionEdit();
   }
 
   loadFromStorage() {
@@ -45,16 +46,40 @@ class TodoListService {
     // replacing whole html content with result of array iteration
     this.jQuery(this.TODO_CONTAINER).html(
       todosList.map(item => {
-        const title = item.title;
-        const id = item.id;
+        const {title, id, description} = item;
         const ageInMin =
-          Math.round((Date.now() - item.creationDate) / (1000 * 60)) + ' min';
-        return `<div id=${id} class='${'status'.concat(item.status)}' >
+          Math.round((Date.now() - item.creationDate) / (1000 * 60)) + " min";
+
+        const statusClass =
+          item.status == this.StatusEnum.DONE
+            ? "list-group-item-secondary"
+            : "";
+        const doneButton = item.status != this.StatusEnum.DONE ? `<div id="${id}"><button class="btn btn-primary done">Done</button></div>`: '';
+        /*         return `<li id=${id} class='${'list-group-item status'.concat(item.status)}' >
                   <p>${title}</p><p>${ageInMin}</p>
                   <p><span class='status'></p>
                   <button id='remove' >Remove</button>
                   <button id='done'>Done</button>
-                </div>`;
+                </li>`; */
+        return `<li class="list-group-item ${statusClass}">
+        <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">${title}</h5>
+        <small class="text-muted">${ageInMin}</small>
+      </div>
+
+      <div class="todo-input-group">
+      <div class="form-group">
+        <input data-ref=${id} class="form-control block details" placeholder="Write description" value=${description}>
+      </div>
+      <div class="todo-button-group">
+         ${doneButton}
+        <div id="${id}">
+        <button class="btn btn-danger remove">Remove</button>
+        </div>
+      </div>
+      
+    </div>
+        </li>`;
       })
     );
 
@@ -71,6 +96,7 @@ class TodoListService {
       id: this.uuidv4(),
       creationDate: Date.now(),
       title: item,
+      description: '',
       status: this.StatusEnum.TODO
     };
     this.existingTodos.push(itemTask);
@@ -139,6 +165,15 @@ class TodoListService {
     this.render(this.existingTodos);
   }
 
+  changeItemDescription(id, newDescription ){
+    const index = this.findIndexOfTask(id);
+    if (index > -1) {
+      this.existingTodos[index].description = newDescription;
+      this.storeList(this.LIST_ID, this.existingTodos);
+    }
+    this.render(this.existingTodos);
+  }
+
   sortTasksByDate(asc) {
     const direction = asc == true ? 1 : -1;
     let sortedTodos = this.existingTodos.slice();
@@ -157,7 +192,7 @@ class TodoListService {
       const key = e.which;
       const value = e.target.value;
       if (key == 13 && value) {
-        $(this.TODO_INPUT).val('');
+        $(this.TODO_INPUT).val("");
         this.addItemToList(value);
         return false;
       }
@@ -168,25 +203,38 @@ class TodoListService {
    * Binds onDone event to the component input
    */
   onDoneInit() {
-    this.jQuery(this.TODO_CONTAINER).on('click', 'button#done', e => {
+    this.jQuery(this.TODO_CONTAINER).on("click", "button.done", e => {
+      console.log(e);
       this.doneItemFromList(
         this.jQuery(e.target)
           .parent()
-          .attr('id')
+          .attr("id")
       );
     });
   }
-
+ 
   /**
    * Binds onRemove event to the component input
    */
   onRemoveInit() {
-    this.jQuery(this.TODO_CONTAINER).on('click', 'button#remove', e => {
+    this.jQuery(this.TODO_CONTAINER).on("click", "button.remove", e => {
       this.removeItemFromList(
         this.jQuery(e.target)
           .parent()
-          .attr('id')
+          .attr("id")
       );
+    });
+  }
+
+  onDescriptionEdit() {
+    this.jQuery(this.TODO_CONTAINER).on("keyup.details", e => {
+      if (e.which == 13) {
+        this.changeItemDescription(
+          this.jQuery(e.target).data("ref"),
+          e.target.value
+          );
+        return false;
+      }
     });
   }
 
@@ -204,27 +252,13 @@ class TodoListService {
    */
   onRadioInit() {
     this.jQuery(this.RADIO_SELECT).click(e => {
-      /*       console.log('radio clicked'); */
-      const radioValue = $("input[id='task']:checked").val();
-      const done = $("input[value='done']").val();
-      const todo = $("input[value='todo']").val();
-      const all = $("input[value='all']").val();
-
-      if (radioValue === done) {
-        console.log('You selected a - ' + radioValue);
-      } else if (radioValue === todo) {
-        console.log('You selected a - ' + radioValue);
-        $('.filter').css('background-color', 'lightgreen');
-      } else {
-        console.log('You selected a - ' + all);
-        $('.filter').css('background-color', 'white');
-      }
-      $('.filter').css('background-color', 'lightblue');
+      const radioValue = $("input[type=radio]:checked").val();
       const result = this.existingTodos.filter(
-        todo => todo.status == radioValue
+        todo => (todo.status == radioValue || radioValue =='')
       );
+      console.log("number of elements " +result.length);
       this.render(result);
-      console.log(result);
+      
     });
   }
 }
