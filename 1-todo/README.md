@@ -19,7 +19,17 @@
 ## Skills
 
 * JS
+    * Constants
+    * Events
+    * Global Scope
+    * Functions and arrow functions
+    * this
+    * Persistance
+    * Browser storage
+    * Importing styles
+    * Importing Libraries, (scripts)
 * CSS
+    * Flex
 * HTML
 * npm
 * jQuery
