@@ -4,12 +4,7 @@ $(document).ready(function() {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
     // https://randomuser.me/
 
-    const detailView = new DetailView($);
-/*     const profileLike = new ProfileLike($);  */
-/*     $(profileLike).on('click', e => {  */
-/*      $('#like').on('click', e => { 
-       return $('div#profile-view').append(currentProfile);
-      }); */
+    let detailView = new DetailView($);
 
 });
 
@@ -34,11 +29,17 @@ class DetailView {
   }
 
   like = () => {
-    console.log('LIKE');
+    console.log(detailView);
+    detailView.incrementIndex();
+    detailView.render();
   }
 
   dislike = () => {
     console.log('DISLIKE');
+  }
+
+  incrementIndex() {
+    this.index++;
   }
 
   render() {
