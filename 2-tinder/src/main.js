@@ -5,8 +5,8 @@ $(document).ready(function() {
     // https://randomuser.me/
 
     fetch("https://randomuser.me/api/?results=200")
-    .then((responce) => {
-        return responce.json();
+    .then((response) => {
+        return response.json();
     })
     .then((data) => {
       allUsers = data;
@@ -14,12 +14,13 @@ $(document).ready(function() {
     //   data.results.forEach((user) => {
     //       new ProfileCard($, user);
     //   });
-
-    new ProfileCard($, data.results[0]); 
-   
-    new ProfileLike($, data.results[0]);
-
-});
+    const currentProfile = new ProfileCard($, data.results[0]);  
+    const profileLike = new ProfileLike($); 
+/*     $(profileLike).on('click', e => {  */
+     $('#like').on('click', e => { 
+       return $('div#profile-view').append(currentProfile);
+      });
+    });
 })
 
 class ProfileCard {
@@ -30,8 +31,7 @@ class ProfileCard {
     this.$ = jquery;
     this.user = user;
     this.render();
-
-    console.log("User", this.user);
+    console.log("User", this.user); 
   }
   
   render(){
@@ -56,28 +56,33 @@ class ProfileCard {
 
 class ProfileLike {
     $;
+/*     status = {
+    LIKE : 0,
+    UNLIKE: 1
+    } */
     LIKE_BUTTON = 'button#like';
-    UNLIKE_BUTTON = 'button#unlike';
+    DISLIKE_BUTTON = 'button#dislike';
 
     constructor(status){
         this.$ = status;
         this.likeInit();
-        this.unlikeInit();
+        this.dislikeInit();
     }
 
     likeInit() {
         this.$(this.LIKE_BUTTON).on('click', e => {
-            $('.output').html(function(i, val) {
-                return val*1+1;
-              });  
+/*             location.reload(); */
+              $('.output').html((i, val) => {
+                return val*1+1;              
+              }); 
         });
     }
 
-    unlikeInit() {
-        this.$(this.UNLIKE_BUTTON).on('click', e => {
-/*             $('.minus-output').html(function(i, val) {
+    dislikeInit() {
+        this.$(this.DISLIKE_BUTTON).on('click', e => {
+             $('.minus-output').html((i, val) => {
                 return val*1-1;
-              });  */ 
+              });  
         });
     }
     
