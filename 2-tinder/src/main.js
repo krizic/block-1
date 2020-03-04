@@ -4,39 +4,73 @@ $(document).ready(function() {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
     // https://randomuser.me/
 
-    fetch("https://randomuser.me/api/?results=200")
+    const detailView = new DetailView($);
+/*     const profileLike = new ProfileLike($);  */
+/*     $(profileLike).on('click', e => {  */
+/*      $('#like').on('click', e => { 
+       return $('div#profile-view').append(currentProfile);
+      }); */
+
+});
+
+class DetailView {
+  allUsers;
+  jquery;
+  index;
+
+  detailPage$;
+
+  constructor(jquery) {
+    this.index = 0;
+    this.jquery = jquery;
+
+    this.detailPage$ = $("section.detail-page");
+
+    this.getUsers(100).then((users) => {
+      this.allUsers = users.results;
+
+      this.render();
+    });
+  }
+
+  like = () => {
+    console.log('LIKE');
+  }
+
+  dislike = () => {
+    console.log('DISLIKE');
+  }
+
+  render() {
+    const currentProfile = new ProfileCard(this.allUsers[this.index]);  
+    const profileLike = new ProfileLike(this.like, this.dislike); 
+    this.detailPage$.html(`
+      ${currentProfile.render()}
+      ${profileLike.render()}
+      `);
+
+  }
+
+  getUsers(amount) {
+    return fetch(`https://randomuser.me/api/?results=${amount}`)
     .then((response) => {
         return response.json();
-    })
-    .then((data) => {
-      allUsers = data;
-
-    //   data.results.forEach((user) => {
-    //       new ProfileCard($, user);
-    //   });
-    const currentProfile = new ProfileCard($, data.results[0]);  
-    const profileLike = new ProfileLike($); 
-/*     $(profileLike).on('click', e => {  */
-     $('#like').on('click', e => { 
-       return $('div#profile-view').append(currentProfile);
-      });
     });
-})
+  }
+}
 
 class ProfileCard {
-  $;
   user;
 
-  constructor(jquery, user){
-    this.$ = jquery;
+  constructor(user){
     this.user = user;
-    this.render();
     console.log("User", this.user); 
   }
   
   render(){
-    this.$("div#profile-view").append(
-      ` <div class="card">
+    return ` 
+    <div id="profile-view">
+    <div class="card">
       <div class="card-header">
       ${this.user.name.title} ${this.user.name.first} ${this.user.name.last} 
       </div>
@@ -49,41 +83,37 @@ class ProfileCard {
         ${this.user.location.city}, ${this.user.location.state}, ${this.user.location.country}
         </p>
       </div>
+    </div>
     </div>`
-    )
+    ;
   }
 }
 
 class ProfileLike {
-    $;
-/*     status = {
-    LIKE : 0,
-    UNLIKE: 1
-    } */
-    LIKE_BUTTON = 'button#like';
-    DISLIKE_BUTTON = 'button#dislike';
 
-    constructor(status){
-        this.$ = status;
-        this.likeInit();
-        this.dislikeInit();
+    likeFn;
+    dislikeFn;
+    constructor(likeFn, dislikeFn){
+      this.likeFn = likeFn;
+      this.dislikeFn = dislikeFn;
     }
 
-    likeInit() {
-        this.$(this.LIKE_BUTTON).on('click', e => {
-/*             location.reload(); */
-              $('.output').html((i, val) => {
-                return val*1+1;              
-              }); 
-        });
-    }
+    render(){
+      return `
+      <div class="card">
+      <div class="text-center p-2 mx-auto">
+        <button type="button" class="btn btn-success btn-lg" id="like" onclick="(${this.likeFn})()">
+          <img src="/modules/bootstrap-icons/icons/heart.svg" class="rounded" alt="" width="128" height="128" title="Heart-Fill">
+          <span class="output"></span>
+        </button>
 
-    dislikeInit() {
-        this.$(this.DISLIKE_BUTTON).on('click', e => {
-             $('.minus-output').html((i, val) => {
-                return val*1-1;
-              });  
-        });
+        <button type="button" class="btn btn-info btn-lg" id="dislike" onclick="(${this.dislikeFn})()">
+          <img src="/modules/bootstrap-icons/icons/heart.svg" class="rounded" alt="" width="128" height="128" title="Heart">
+          <span class="minus-output"></span>
+        </button>
+      </div>
+      </div>
+      `;
     }
     
 }
