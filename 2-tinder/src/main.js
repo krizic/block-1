@@ -1,11 +1,9 @@
 // Waiting for jQuery to initialize
 $(document).ready(function() {
+  // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+  // https://randomuser.me/
 
-    // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-    // https://randomuser.me/
-
-   const detailView = new DetailView($);
-
+  const constrollerView = new ViewController($);
 });
 
 class DetailView {
@@ -15,15 +13,11 @@ class DetailView {
 
   detailPage$;
 
-  constructor(jquery) {
+  constructor(jquery, allUsers) {
     this.index = 0;
     this.jquery = jquery;
+    this.allUsers = allUsers;
     this.detailPage$ = $("section.detail-page");
-
-    this.getUsers(100).then((users) => {
-      this.allUsers = users.results;
-      this.render();
-    });
   }
 
   like = () => {
@@ -36,39 +30,36 @@ class DetailView {
     this.allUsers[this.index].like = false;
     this.incrementIndex();
     this.render();
-  }
+  };
 
   incrementIndex() {
     this.index++;
   }
 
-
-  render() {
-    const currentProfile = new ProfileCard(this.allUsers[this.index]);  
-    const profileLike = new ProfileLike(this.like, this.dislike, this.detailPage$); 
-    this.detailPage$.html(`
-      ${currentProfile.render()}
-      ${profileLike.render()}
-      `);
-  }
-
-  getUsers(amount) {
-    return fetch(`https://randomuser.me/api/?results=${amount}`)
-    .then((response) => {
-        return response.json();
-    });
+  render = () => {
+    const currentProfile = new ProfileCard(this.allUsers[this.index]);
+    const profileLike = new ProfileLike(
+      this.like,
+      this.dislike,
+      this.detailPage$
+    );
+    
+    return `
+    ${currentProfile.render()}
+    ${profileLike.render()}
+    `;
   }
 }
 
 class ProfileCard {
   user;
 
-  constructor(user){
+  constructor(user) {
     this.user = user;
-    console.log("ProfileCard User", this.user); 
+    console.log("ProfileCard User", this.user);
   }
-  
-  render(){
+
+  render = () => {
     return ` 
     <div id="profile-view">
     <div class="card">
@@ -85,40 +76,37 @@ class ProfileCard {
         </p>
       </div>
     </div>
-    </div>`
-    ;
+    </div>`;
   }
 }
 
 class ProfileLike {
+  likeFn;
+  dislikeFn;
+  detailPage$;
 
-    likeFn;
-    dislikeFn; 
-    detailPage$;
+  constructor(likeFn, dislikeFn, detailPage$) {
+    this.likeFn = likeFn;
+    this.dislikeFn = dislikeFn;
+    this.detailPage$ = detailPage$;
+    this.onLikeInit();
+    this.onDislikeInit();
+  }
 
+  onLikeInit() {
+    this.detailPage$.on("click", "button#like", e => {
+      this.likeFn();
+    });
+  }
 
-    constructor(likeFn, dislikeFn, detailPage$){
-      this.likeFn = likeFn;
-      this.dislikeFn = dislikeFn;
-      this.detailPage$ = detailPage$;
-      this.onLikeInit();
-      this.onDislikeInit();
-    }
+  onDislikeInit() {
+    this.detailPage$.on("click", "button#dislike", e => {
+      this.dislikeFn();
+    });
+  }
 
-    onLikeInit() {
-      this.detailPage$.on("click", "button#like", e => {
-        this.likeFn();
-      });
-    }
-
-    onDislikeInit() {
-      this.detailPage$.on("click", "button#dislike", e => {
-        this.dislikeFn();
-      });
-    }
-
-    render(){
-      return `
+  render() {
+    return `
       <div class="card">
       <div class="text-center p-2 mx-auto">
         <button type="button" class="btn btn-success btn-lg" id="like">
@@ -132,5 +120,83 @@ class ProfileLike {
       </div>
       </div>
       `;
-    }   
+  }
+}
+
+class ViewController {
+  jquery;
+  root$;
+  pages;
+  allUsers;
+  pageName = {
+    "detailPage" : 0,
+    "listPage": 1
+  };
+  currentPage = this.pageName.listPage;
+
+  constructor(jquery) {
+    this.jquery = jquery;
+    this.root$ = this.jquery('#root');
+    this.getUsers(100).then(users => {
+      this.allUsers = users.results;
+      this.pages = [
+        new DetailView(this.jquery, this.allUsers),
+        new ListView()
+        //
+      ];
+
+      this.mount();
+    });
+  }
+
+  mount = () => {
+    const nav = new Navigation(this.jquery);
+    this.root$.html(`
+      ${nav.render()}
+      ${this.pages[this.currentPage].render()}
+    `);
+  }
+
+  getUsers(amount) {
+    return fetch(`https://randomuser.me/api/?results=${amount}`).then(
+      response => {
+        return response.json();
+      }
+    );
+  }
+}
+
+class Navigation {
+  jquery;
+  constructor(jquery) {
+    this.jquery = jquery;
+  }
+
+  render() {
+    return `<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Tinder</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Profile <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">List</a>
+      </li>
+  </div>
+  </nav>`;
+  }
+  
+}
+
+class ListView{
+
+  render(){
+    return `<div> HI </div>`
+  }
+
 }
