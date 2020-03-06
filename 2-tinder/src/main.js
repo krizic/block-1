@@ -4,7 +4,7 @@ $(document).ready(function() {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
     // https://randomuser.me/
 
-    let detailView = new DetailView($);
+   const detailView = new DetailView($);
 
 });
 
@@ -18,38 +18,38 @@ class DetailView {
   constructor(jquery) {
     this.index = 0;
     this.jquery = jquery;
-
     this.detailPage$ = $("section.detail-page");
 
     this.getUsers(100).then((users) => {
       this.allUsers = users.results;
-
       this.render();
     });
   }
 
   like = () => {
-    console.log(detailView);
-    detailView.incrementIndex();
-    detailView.render();
-  }
+    this.allUsers[this.index].like = true;
+    this.incrementIndex();
+    this.render();
+  };
 
   dislike = () => {
-    console.log('DISLIKE');
+    this.allUsers[this.index].like = false;
+    this.incrementIndex();
+    this.render();
   }
 
   incrementIndex() {
     this.index++;
   }
 
+
   render() {
     const currentProfile = new ProfileCard(this.allUsers[this.index]);  
-    const profileLike = new ProfileLike(this.like, this.dislike); 
+    const profileLike = new ProfileLike(this.like, this.dislike, this.detailPage$); 
     this.detailPage$.html(`
       ${currentProfile.render()}
       ${profileLike.render()}
       `);
-
   }
 
   getUsers(amount) {
@@ -65,7 +65,7 @@ class ProfileCard {
 
   constructor(user){
     this.user = user;
-    console.log("User", this.user); 
+    console.log("ProfileCard User", this.user); 
   }
   
   render(){
@@ -93,28 +93,44 @@ class ProfileCard {
 class ProfileLike {
 
     likeFn;
-    dislikeFn;
-    constructor(likeFn, dislikeFn){
+    dislikeFn; 
+    detailPage$;
+
+
+    constructor(likeFn, dislikeFn, detailPage$){
       this.likeFn = likeFn;
       this.dislikeFn = dislikeFn;
+      this.detailPage$ = detailPage$;
+      this.onLikeInit();
+      this.onDislikeInit();
+    }
+
+    onLikeInit() {
+      this.detailPage$.on("click", "button#like", e => {
+        this.likeFn();
+      });
+    }
+
+    onDislikeInit() {
+      this.detailPage$.on("click", "button#dislike", e => {
+        this.dislikeFn();
+      });
     }
 
     render(){
       return `
       <div class="card">
       <div class="text-center p-2 mx-auto">
-        <button type="button" class="btn btn-success btn-lg" id="like" onclick="(${this.likeFn})()">
+        <button type="button" class="btn btn-success btn-lg" id="like">
           <img src="/modules/bootstrap-icons/icons/heart.svg" class="rounded" alt="" width="128" height="128" title="Heart-Fill">
           <span class="output"></span>
         </button>
-
-        <button type="button" class="btn btn-info btn-lg" id="dislike" onclick="(${this.dislikeFn})()">
+        <button type="button" class="btn btn-info btn-lg" id="dislike">
           <img src="/modules/bootstrap-icons/icons/heart.svg" class="rounded" alt="" width="128" height="128" title="Heart">
           <span class="minus-output"></span>
         </button>
       </div>
       </div>
       `;
-    }
-    
+    }   
 }
