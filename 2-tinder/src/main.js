@@ -1,43 +1,33 @@
-// Waiting for jQuery to initialize
 $(document).ready(function() {
-  // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-  // https://randomuser.me/
-
   const constrollerView = new ViewController($);
 });
 
 class DetailView {
-  allUsers;
+  user;
   jquery;
-  index;
-
   detailPage$;
+  rated;
 
-  constructor(jquery, allUsers) {
+  constructor(jquery, user, onChange) {
     this.index = 0;
     this.jquery = jquery;
-    this.allUsers = allUsers;
-    this.detailPage$ = $("section.detail-page");
+    this.user = user;
+    this.rated = onChange;
+    this.detailPage$ = $("#root");
   }
 
   like = () => {
-    this.allUsers[this.index].like = true;
-    this.incrementIndex();
-    this.render();
+    this.rated(true);
   };
 
   dislike = () => {
-    this.allUsers[this.index].like = false;
-    this.incrementIndex();
-    this.render();
+    this.rated(false);
   };
 
-  incrementIndex() {
-    this.index++;
-  }
+
 
   render = () => {
-    const currentProfile = new ProfileCard(this.allUsers[this.index]);
+    const currentProfile = new ProfileCard(this.user);
     const profileLike = new ProfileLike(
       this.like,
       this.dislike,
@@ -45,8 +35,10 @@ class DetailView {
     );
     
     return `
-    ${currentProfile.render()}
-    ${profileLike.render()}
+    <section class="detail-page">
+      ${currentProfile.render()}
+      ${profileLike.render()}
+    </selection>
     `;
   }
 }
@@ -132,24 +124,36 @@ class ViewController {
     "detailPage" : 0,
     "listPage": 1
   };
-  currentPage = this.pageName.listPage;
+  currentUser = 0;
+  currentPage = this.pageName.detailPage;
 
   constructor(jquery) {
     this.jquery = jquery;
     this.root$ = this.jquery('#root');
     this.getUsers(100).then(users => {
       this.allUsers = users.results;
-      this.pages = [
-        new DetailView(this.jquery, this.allUsers),
-        new ListView(this.allUsers)
-        //
-      ];
 
       this.mount();
     });
   }
 
+  incrementIndex() {
+    this.currentUser++;
+  }
+
+  refresh = (liked) => {
+    this.allUsers[this.currentUser].liked = liked;
+    this.incrementIndex();
+    this.mount();
+  }
+
   mount = () => {
+
+    this.pages = [
+      new DetailView(this.jquery, this.allUsers[this.currentUser], this.refresh),
+      new ListView(this.allUsers)
+    ];
+
     const nav = new Navigation(this.jquery);
     this.root$.html(`
       ${nav.render()}
@@ -190,7 +194,6 @@ class Navigation {
   </div>
   </nav>`;
   }
-  
 }
 
 class ListView {
@@ -202,7 +205,6 @@ class ListView {
 
   render(){
     let result = "<ul class='list-group'>";
-    console.log
     this.allUsers
       .map( user => console.log(user))
       .filter(user => (user && user.like && user.like== false))
