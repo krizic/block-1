@@ -141,7 +141,7 @@ class ViewController {
       this.allUsers = users.results;
       this.pages = [
         new DetailView(this.jquery, this.allUsers),
-        new ListView()
+        new ListView(this.allUsers)
         //
       ];
 
@@ -193,10 +193,23 @@ class Navigation {
   
 }
 
-class ListView{
+class ListView {
+  allUsers;
+
+  constructor(allUsers) {
+    this.allUsers = allUsers;
+  }
 
   render(){
-    return `<div> HI </div>`
+    let result = "<ul class='list-group'>";
+    console.log
+    this.allUsers
+      .map( user => console.log(user))
+      .filter(user => (user && user.like && user.like== false))
+      .map (user => {
+        result += `<li class="list-group-item">${user.name.title} ${user.name.first} ${user.name.last}</li>`;
+      });
+    return result + "</ul>";
   }
 
 }
