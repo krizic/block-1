@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "todo",
   "scripts": {
-    "start": "live-server src --port=8989  --mount=/modules:./node_modules",
+    "start": "live-server dist --port=8989",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },
@@ -18,6 +18,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "core-js": "^3.6.4",
+    "html-webpack-plugin": "^3.2.0",
     "live-server": "^1.2.1",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"

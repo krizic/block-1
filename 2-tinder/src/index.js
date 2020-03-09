@@ -5,7 +5,7 @@ $(document).ready(function() {
   const constrollerView = new ViewController($);
 });
 
-class ProfileCard {
+export class ProfileCard {
   user;
 
   constructor(user) {
@@ -34,7 +34,7 @@ class ProfileCard {
   };
 }
 
-class ProfileLike {
+export class ProfileLike {
   likeFn;
   dislikeFn;
   detailPage$;

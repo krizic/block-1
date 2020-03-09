@@ -1,3 +1,5 @@
+import {ProfileCard, ProfileLike} from './index';
+ 
 export class DetailView {
     user;
     jquery;
@@ -9,7 +11,7 @@ export class DetailView {
       this.jquery = jquery;
       this.user = user;
       this.rated = onChange;
-      this.detailPage$ = $("#root");
+      this.detailPage$ = this.jquery("#root");
     }
   
     like = () => {
