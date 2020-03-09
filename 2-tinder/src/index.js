@@ -1,47 +1,9 @@
+import $ from "jquery";
+import {DetailView} from "./detail-view";
+
 $(document).ready(function() {
   const constrollerView = new ViewController($);
 });
-
-class DetailView {
-  user;
-  jquery;
-  detailPage$;
-  rated;
-
-  constructor(jquery, user, onChange) {
-    this.index = 0;
-    this.jquery = jquery;
-    this.user = user;
-    this.rated = onChange;
-    this.detailPage$ = $("#root");
-  }
-
-  like = () => {
-    this.rated(true);
-  };
-
-  dislike = () => {
-    this.rated(false);
-  };
-
-
-
-  render = () => {
-    const currentProfile = new ProfileCard(this.user);
-    const profileLike = new ProfileLike(
-      this.like,
-      this.dislike,
-      this.detailPage$
-    );
-    
-    return `
-    <section class="detail-page">
-      ${currentProfile.render()}
-      ${profileLike.render()}
-    </selection>
-    `;
-  }
-}
 
 class ProfileCard {
   user;
@@ -69,7 +31,7 @@ class ProfileCard {
       </div>
     </div>
     </div>`;
-  }
+  };
 }
 
 class ProfileLike {
@@ -121,15 +83,15 @@ class ViewController {
   pages;
   allUsers;
   pageName = {
-    "detailPage" : 0,
-    "listPage": 1
+    detailPage: 0,
+    listPage: 1
   };
   currentUser = 0;
   currentPage = this.pageName.detailPage;
 
   constructor(jquery) {
     this.jquery = jquery;
-    this.root$ = this.jquery('#root');
+    this.root$ = this.jquery("#root");
     this.getUsers(100).then(users => {
       this.allUsers = users.results;
 
@@ -141,16 +103,19 @@ class ViewController {
     this.currentUser++;
   }
 
-  refresh = (liked) => {
+  refresh = liked => {
     this.allUsers[this.currentUser].liked = liked;
     this.incrementIndex();
     this.mount();
-  }
+  };
 
   mount = () => {
-
     this.pages = [
-      new DetailView(this.jquery, this.allUsers[this.currentUser], this.refresh),
+      new DetailView(
+        this.jquery,
+        this.allUsers[this.currentUser],
+        this.refresh
+      ),
       new ListView(this.allUsers)
     ];
 
@@ -159,7 +124,7 @@ class ViewController {
       ${nav.render()}
       ${this.pages[this.currentPage].render()}
     `);
-  }
+  };
 
   getUsers(amount) {
     return fetch(`https://randomuser.me/api/?results=${amount}`).then(
@@ -203,15 +168,14 @@ class ListView {
     this.allUsers = allUsers;
   }
 
-  render(){
+  render() {
     let result = "<ul class='list-group'>";
     this.allUsers
-      .map( user => console.log(user))
-      .filter(user => (user && user.like && user.like== false))
-      .map (user => {
+      .map(user => console.log(user))
+      .filter(user => user && user.like && user.like == false)
+      .map(user => {
         result += `<li class="list-group-item">${user.name.title} ${user.name.first} ${user.name.last}</li>`;
       });
     return result + "</ul>";
   }
-
 }
