@@ -1,5 +1,5 @@
-import {ProfileCard, ProfileLike} from './index';
- 
+import { ProfileCard } from './profile-card';
+import { ProfileLike } from './profile-like';
 export class DetailView {
     user;
     jquery;
@@ -21,8 +21,6 @@ export class DetailView {
     dislike = () => {
       this.rated(false);
     };
-  
-  
   
     render = () => {
       const currentProfile = new ProfileCard(this.user);
