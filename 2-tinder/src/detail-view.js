@@ -1,4 +1,5 @@
-import {ProfileCard, ProfileLike} from './index';
+import {ProfileLike} from './profile-like';
+import {ProfileCard} from "./profile-card";
  
 export class DetailView {
     user;
