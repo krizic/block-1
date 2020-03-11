@@ -1,28 +1,31 @@
 import { ProfileCard } from './profile-card';
 import { ProfileLike } from './profile-like';
-export class DetailView {
-    user;
-    jquery;
-    detailPage$;
-    rated;
+import { User } from "./api/models";
+import { IPage } from "./intefaces/page";
+
+export class DetailView implements IPage {
+
+    user: User;
+    jquery: JQueryStatic;
+    detailPage$: any;
+    rated: (rating: boolean) => void;
   
-    constructor(jquery, user, onChange) {
-      this.index = 0;
+    constructor(jquery, user: User, onChange: (rating: boolean) => void) {
       this.jquery = jquery;
       this.user = user;
       this.rated = onChange;
       this.detailPage$ = this.jquery("#root");
     }
   
-    like = () => {
+    like = (): void => {
       this.rated(true);
     };
   
-    dislike = () => {
+    dislike = (): void => {
       this.rated(false);
     };
   
-    render = () => {
+    render = (): string => {
       const currentProfile = new ProfileCard(this.user);
       const profileLike = new ProfileLike(
         this.like,

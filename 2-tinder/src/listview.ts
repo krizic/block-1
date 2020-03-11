@@ -1,5 +1,7 @@
 
-export class ListView {
+import { IPage } from "./intefaces/page";
+
+export class ListView implements IPage {
     allUsers;
   
     constructor(allUsers) {

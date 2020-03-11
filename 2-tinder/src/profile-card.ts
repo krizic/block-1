@@ -1,12 +1,14 @@
-export class ProfileCard {
-  user;
+import { User } from "./api/models";
 
-  constructor(user) {
+export class ProfileCard {
+  user : User;
+
+  constructor(user: User) {
     this.user = user;
     console.log("ProfileCard User", this.user);
   }
 
-  render = () => {
+  render = () : string => {
     return ` 
     <div id="profile-view">
     <div class="card">
