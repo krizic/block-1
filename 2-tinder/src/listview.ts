@@ -2,13 +2,13 @@
 import { IPage } from "./intefaces/page";
 
 export class ListView implements IPage {
-    allUsers;
+    allUsers : any;
   
-    constructor(allUsers) {
+    constructor(allUsers : any) {
       this.allUsers = allUsers;
     }
   
-    render() {
+    render = (): string => {
       let result = "<ul class='list-group'>";
       this.allUsers
         .map(user => console.log(user))
