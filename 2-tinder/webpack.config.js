@@ -6,7 +6,7 @@ module.exports = {
     port: 8989
   },
   entry: "./src/index.ts",
-  mode: "development",
+  mode: "production",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js"

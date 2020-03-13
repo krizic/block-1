@@ -1,12 +1,20 @@
+import { PageName } from "./models/page-name";
 
 export class Navigation {
-  jquery: JQueryStatic;
-  
-    constructor(jquery) {
-      this.jquery = jquery;
+  mainPage$: any;  
+
+    constructor(private jquery: JQueryStatic, private changePage: (page) => void , private pageName : PageName) {
+      this.mainPage$ = this.jquery("#root");
+      this.onInitClick();
+    }
+   
+    onInitClick(): void {
+      this.mainPage$.on("click", "button.navbar-toggler", e => {
+        this.changePage(this.pageName);
+      });
     }
   
-    render = () : string => {
+    render() {
       return `<nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">Tinder</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">

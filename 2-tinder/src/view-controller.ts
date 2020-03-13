@@ -1,14 +1,10 @@
 import {DetailView} from "./detail-view";
-import {Navigation} from "./navigation";
 import {ListView} from "./listview";
 import { IPage } from "./intefaces/page";
 import { IUserView } from "./intefaces/user-view";
-import { UserResponseObject, User } from "./api/models";
+import { UserResponseObject } from "./api/models";
+import { PageName } from "./models/page-name";
 
-enum PageName {
-  detailPage = 0,
-  listPage = 1
-}
 
 export class ViewController {
   jquery: JQueryStatic;
@@ -18,6 +14,7 @@ export class ViewController {
   currentUser : number = 0;
   currentPage: PageName = PageName.detailPage;
 
+
   constructor(jquery : JQueryStatic) {
     this.jquery = jquery;
     this.root$ = this.jquery("#root");
@@ -25,6 +22,11 @@ export class ViewController {
       this.allUsers = users.results;
       this.mount();
     });
+  }
+
+  changePage = (pageName: PageName):void =>  {
+    this.currentPage = pageName;
+    this.mount();
   }
 
   incrementIndex (): void {
@@ -42,14 +44,13 @@ export class ViewController {
       new DetailView(
         this.jquery,
         this.allUsers[this.currentUser],
-        this.refresh
+        this.refresh,
+        this.changePage
       ),
-      new ListView(this.allUsers)
+      new ListView(this.allUsers, this.jquery, this.changePage)
     ];
 
-    const nav = new Navigation(this.jquery);
     this.root$.html(`
-        ${nav.render()}
         ${this.pages[this.currentPage].render()}
       `);
   };
