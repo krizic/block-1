@@ -109,17 +109,6 @@ eval("var api = __webpack_require__(/*! ../../../style-loader/dist/runtime/injec
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/a-function.js":
-/*!******************************************************!*\
-  !*** ./node_modules/core-js/internals/a-function.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = function (it) {\n  if (typeof it != 'function') {\n    throw TypeError(String(it) + ' is not a function');\n  } return it;\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/a-function.js?");
-
-/***/ }),
-
 /***/ "./node_modules/core-js/internals/an-object.js":
 /*!*****************************************************!*\
   !*** ./node_modules/core-js/internals/an-object.js ***!
@@ -139,50 +128,6 @@ eval("var isObject = __webpack_require__(/*! ../internals/is-object */ \"./node_
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ \"./node_modules/core-js/internals/to-indexed-object.js\");\nvar toLength = __webpack_require__(/*! ../internals/to-length */ \"./node_modules/core-js/internals/to-length.js\");\nvar toAbsoluteIndex = __webpack_require__(/*! ../internals/to-absolute-index */ \"./node_modules/core-js/internals/to-absolute-index.js\");\n\n// `Array.prototype.{ indexOf, includes }` methods implementation\nvar createMethod = function (IS_INCLUDES) {\n  return function ($this, el, fromIndex) {\n    var O = toIndexedObject($this);\n    var length = toLength(O.length);\n    var index = toAbsoluteIndex(fromIndex, length);\n    var value;\n    // Array#includes uses SameValueZero equality algorithm\n    // eslint-disable-next-line no-self-compare\n    if (IS_INCLUDES && el != el) while (length > index) {\n      value = O[index++];\n      // eslint-disable-next-line no-self-compare\n      if (value != value) return true;\n    // Array#indexOf ignores holes, Array#includes - not\n    } else for (;length > index; index++) {\n      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;\n    } return !IS_INCLUDES && -1;\n  };\n};\n\nmodule.exports = {\n  // `Array.prototype.includes` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.includes\n  includes: createMethod(true),\n  // `Array.prototype.indexOf` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.indexof\n  indexOf: createMethod(false)\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/array-includes.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/array-iteration.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/core-js/internals/array-iteration.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var bind = __webpack_require__(/*! ../internals/function-bind-context */ \"./node_modules/core-js/internals/function-bind-context.js\");\nvar IndexedObject = __webpack_require__(/*! ../internals/indexed-object */ \"./node_modules/core-js/internals/indexed-object.js\");\nvar toObject = __webpack_require__(/*! ../internals/to-object */ \"./node_modules/core-js/internals/to-object.js\");\nvar toLength = __webpack_require__(/*! ../internals/to-length */ \"./node_modules/core-js/internals/to-length.js\");\nvar arraySpeciesCreate = __webpack_require__(/*! ../internals/array-species-create */ \"./node_modules/core-js/internals/array-species-create.js\");\n\nvar push = [].push;\n\n// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation\nvar createMethod = function (TYPE) {\n  var IS_MAP = TYPE == 1;\n  var IS_FILTER = TYPE == 2;\n  var IS_SOME = TYPE == 3;\n  var IS_EVERY = TYPE == 4;\n  var IS_FIND_INDEX = TYPE == 6;\n  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;\n  return function ($this, callbackfn, that, specificCreate) {\n    var O = toObject($this);\n    var self = IndexedObject(O);\n    var boundFunction = bind(callbackfn, that, 3);\n    var length = toLength(self.length);\n    var index = 0;\n    var create = specificCreate || arraySpeciesCreate;\n    var target = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;\n    var value, result;\n    for (;length > index; index++) if (NO_HOLES || index in self) {\n      value = self[index];\n      result = boundFunction(value, index, O);\n      if (TYPE) {\n        if (IS_MAP) target[index] = result; // map\n        else if (result) switch (TYPE) {\n          case 3: return true;              // some\n          case 5: return value;             // find\n          case 6: return index;             // findIndex\n          case 2: push.call(target, value); // filter\n        } else if (IS_EVERY) return false;  // every\n      }\n    }\n    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;\n  };\n};\n\nmodule.exports = {\n  // `Array.prototype.forEach` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.foreach\n  forEach: createMethod(0),\n  // `Array.prototype.map` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.map\n  map: createMethod(1),\n  // `Array.prototype.filter` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.filter\n  filter: createMethod(2),\n  // `Array.prototype.some` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.some\n  some: createMethod(3),\n  // `Array.prototype.every` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.every\n  every: createMethod(4),\n  // `Array.prototype.find` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.find\n  find: createMethod(5),\n  // `Array.prototype.findIndex` method\n  // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex\n  findIndex: createMethod(6)\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/array-iteration.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/array-method-has-species-support.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/core-js/internals/array-method-has-species-support.js ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var fails = __webpack_require__(/*! ../internals/fails */ \"./node_modules/core-js/internals/fails.js\");\nvar wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ \"./node_modules/core-js/internals/well-known-symbol.js\");\nvar V8_VERSION = __webpack_require__(/*! ../internals/engine-v8-version */ \"./node_modules/core-js/internals/engine-v8-version.js\");\n\nvar SPECIES = wellKnownSymbol('species');\n\nmodule.exports = function (METHOD_NAME) {\n  // We can't use this feature detection in V8 since it causes\n  // deoptimization and serious performance degradation\n  // https://github.com/zloirock/core-js/issues/677\n  return V8_VERSION >= 51 || !fails(function () {\n    var array = [];\n    var constructor = array.constructor = {};\n    constructor[SPECIES] = function () {\n      return { foo: 1 };\n    };\n    return array[METHOD_NAME](Boolean).foo !== 1;\n  });\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/array-method-has-species-support.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/array-method-uses-to-length.js":
-/*!***********************************************************************!*\
-  !*** ./node_modules/core-js/internals/array-method-uses-to-length.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ \"./node_modules/core-js/internals/descriptors.js\");\nvar fails = __webpack_require__(/*! ../internals/fails */ \"./node_modules/core-js/internals/fails.js\");\nvar has = __webpack_require__(/*! ../internals/has */ \"./node_modules/core-js/internals/has.js\");\n\nvar defineProperty = Object.defineProperty;\nvar cache = {};\n\nvar thrower = function (it) { throw it; };\n\nmodule.exports = function (METHOD_NAME, options) {\n  if (has(cache, METHOD_NAME)) return cache[METHOD_NAME];\n  if (!options) options = {};\n  var method = [][METHOD_NAME];\n  var ACCESSORS = has(options, 'ACCESSORS') ? options.ACCESSORS : false;\n  var argument0 = has(options, 0) ? options[0] : thrower;\n  var argument1 = has(options, 1) ? options[1] : undefined;\n\n  return cache[METHOD_NAME] = !!method && !fails(function () {\n    if (ACCESSORS && !DESCRIPTORS) return true;\n    var O = { length: -1 };\n\n    if (ACCESSORS) defineProperty(O, 1, { enumerable: true, get: thrower });\n    else O[1] = 1;\n\n    method.call(O, argument0, argument1);\n  });\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/array-method-uses-to-length.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/array-species-create.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/core-js/internals/array-species-create.js ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var isObject = __webpack_require__(/*! ../internals/is-object */ \"./node_modules/core-js/internals/is-object.js\");\nvar isArray = __webpack_require__(/*! ../internals/is-array */ \"./node_modules/core-js/internals/is-array.js\");\nvar wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ \"./node_modules/core-js/internals/well-known-symbol.js\");\n\nvar SPECIES = wellKnownSymbol('species');\n\n// `ArraySpeciesCreate` abstract operation\n// https://tc39.github.io/ecma262/#sec-arrayspeciescreate\nmodule.exports = function (originalArray, length) {\n  var C;\n  if (isArray(originalArray)) {\n    C = originalArray.constructor;\n    // cross-realm fallback\n    if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;\n    else if (isObject(C)) {\n      C = C[SPECIES];\n      if (C === null) C = undefined;\n    }\n  } return new (C === undefined ? Array : C)(length === 0 ? 0 : length);\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/array-species-create.js?");
 
 /***/ }),
 
@@ -230,18 +175,6 @@ eval("module.exports = function (bitmap, value) {\n  return {\n    enumerable: !
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/create-property.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/core-js/internals/create-property.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nvar toPrimitive = __webpack_require__(/*! ../internals/to-primitive */ \"./node_modules/core-js/internals/to-primitive.js\");\nvar definePropertyModule = __webpack_require__(/*! ../internals/object-define-property */ \"./node_modules/core-js/internals/object-define-property.js\");\nvar createPropertyDescriptor = __webpack_require__(/*! ../internals/create-property-descriptor */ \"./node_modules/core-js/internals/create-property-descriptor.js\");\n\nmodule.exports = function (object, key, value) {\n  var propertyKey = toPrimitive(key);\n  if (propertyKey in object) definePropertyModule.f(object, propertyKey, createPropertyDescriptor(0, value));\n  else object[propertyKey] = value;\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/create-property.js?");
-
-/***/ }),
-
 /***/ "./node_modules/core-js/internals/descriptors.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js/internals/descriptors.js ***!
@@ -261,28 +194,6 @@ eval("var fails = __webpack_require__(/*! ../internals/fails */ \"./node_modules
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var global = __webpack_require__(/*! ../internals/global */ \"./node_modules/core-js/internals/global.js\");\nvar isObject = __webpack_require__(/*! ../internals/is-object */ \"./node_modules/core-js/internals/is-object.js\");\n\nvar document = global.document;\n// typeof document.createElement is 'object' in old IE\nvar EXISTS = isObject(document) && isObject(document.createElement);\n\nmodule.exports = function (it) {\n  return EXISTS ? document.createElement(it) : {};\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/document-create-element.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/engine-user-agent.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/core-js/internals/engine-user-agent.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var getBuiltIn = __webpack_require__(/*! ../internals/get-built-in */ \"./node_modules/core-js/internals/get-built-in.js\");\n\nmodule.exports = getBuiltIn('navigator', 'userAgent') || '';\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/engine-user-agent.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/engine-v8-version.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/core-js/internals/engine-v8-version.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var global = __webpack_require__(/*! ../internals/global */ \"./node_modules/core-js/internals/global.js\");\nvar userAgent = __webpack_require__(/*! ../internals/engine-user-agent */ \"./node_modules/core-js/internals/engine-user-agent.js\");\n\nvar process = global.process;\nvar versions = process && process.versions;\nvar v8 = versions && versions.v8;\nvar match, version;\n\nif (v8) {\n  match = v8.split('.');\n  version = match[0] + match[1];\n} else if (userAgent) {\n  match = userAgent.match(/Edge\\/(\\d+)/);\n  if (!match || match[1] >= 74) {\n    match = userAgent.match(/Chrome\\/(\\d+)/);\n    if (match) version = match[1];\n  }\n}\n\nmodule.exports = version && +version;\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/engine-v8-version.js?");
 
 /***/ }),
 
@@ -316,17 +227,6 @@ eval("var global = __webpack_require__(/*! ../internals/global */ \"./node_modul
 /***/ (function(module, exports) {
 
 eval("module.exports = function (exec) {\n  try {\n    return !!exec();\n  } catch (error) {\n    return true;\n  }\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/fails.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/function-bind-context.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/core-js/internals/function-bind-context.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var aFunction = __webpack_require__(/*! ../internals/a-function */ \"./node_modules/core-js/internals/a-function.js\");\n\n// optional / simple context binding\nmodule.exports = function (fn, that, length) {\n  aFunction(fn);\n  if (that === undefined) return fn;\n  switch (length) {\n    case 0: return function () {\n      return fn.call(that);\n    };\n    case 1: return function (a) {\n      return fn.call(that, a);\n    };\n    case 2: return function (a, b) {\n      return fn.call(that, a, b);\n    };\n    case 3: return function (a, b, c) {\n      return fn.call(that, a, b, c);\n    };\n  }\n  return function (/* ...args */) {\n    return fn.apply(that, arguments);\n  };\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/function-bind-context.js?");
 
 /***/ }),
 
@@ -418,17 +318,6 @@ eval("var NATIVE_WEAK_MAP = __webpack_require__(/*! ../internals/native-weak-map
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/is-array.js":
-/*!****************************************************!*\
-  !*** ./node_modules/core-js/internals/is-array.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var classof = __webpack_require__(/*! ../internals/classof-raw */ \"./node_modules/core-js/internals/classof-raw.js\");\n\n// `IsArray` abstract operation\n// https://tc39.github.io/ecma262/#sec-isarray\nmodule.exports = Array.isArray || function isArray(arg) {\n  return classof(arg) == 'Array';\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/is-array.js?");
-
-/***/ }),
-
 /***/ "./node_modules/core-js/internals/is-forced.js":
 /*!*****************************************************!*\
   !*** ./node_modules/core-js/internals/is-forced.js ***!
@@ -459,17 +348,6 @@ eval("module.exports = function (it) {\n  return typeof it === 'object' ? it !==
 /***/ (function(module, exports) {
 
 eval("module.exports = false;\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/is-pure.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/native-symbol.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/core-js/internals/native-symbol.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var fails = __webpack_require__(/*! ../internals/fails */ \"./node_modules/core-js/internals/fails.js\");\n\nmodule.exports = !!Object.getOwnPropertySymbols && !fails(function () {\n  // Chrome 38 Symbol has incorrect toString conversion\n  // eslint-disable-next-line no-undef\n  return !String(Symbol());\n});\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/native-symbol.js?");
 
 /***/ }),
 
@@ -683,17 +561,6 @@ eval("var toInteger = __webpack_require__(/*! ../internals/to-integer */ \"./nod
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/to-object.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/core-js/internals/to-object.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ \"./node_modules/core-js/internals/require-object-coercible.js\");\n\n// `ToObject` abstract operation\n// https://tc39.github.io/ecma262/#sec-toobject\nmodule.exports = function (argument) {\n  return Object(requireObjectCoercible(argument));\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/to-object.js?");
-
-/***/ }),
-
 /***/ "./node_modules/core-js/internals/to-primitive.js":
 /*!********************************************************!*\
   !*** ./node_modules/core-js/internals/to-primitive.js ***!
@@ -713,75 +580,6 @@ eval("var isObject = __webpack_require__(/*! ../internals/is-object */ \"./node_
 /***/ (function(module, exports) {
 
 eval("var id = 0;\nvar postfix = Math.random();\n\nmodule.exports = function (key) {\n  return 'Symbol(' + String(key === undefined ? '' : key) + ')_' + (++id + postfix).toString(36);\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/uid.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/use-symbol-as-uid.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/core-js/internals/use-symbol-as-uid.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var NATIVE_SYMBOL = __webpack_require__(/*! ../internals/native-symbol */ \"./node_modules/core-js/internals/native-symbol.js\");\n\nmodule.exports = NATIVE_SYMBOL\n  // eslint-disable-next-line no-undef\n  && !Symbol.sham\n  // eslint-disable-next-line no-undef\n  && typeof Symbol.iterator == 'symbol';\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/use-symbol-as-uid.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/internals/well-known-symbol.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/core-js/internals/well-known-symbol.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var global = __webpack_require__(/*! ../internals/global */ \"./node_modules/core-js/internals/global.js\");\nvar shared = __webpack_require__(/*! ../internals/shared */ \"./node_modules/core-js/internals/shared.js\");\nvar has = __webpack_require__(/*! ../internals/has */ \"./node_modules/core-js/internals/has.js\");\nvar uid = __webpack_require__(/*! ../internals/uid */ \"./node_modules/core-js/internals/uid.js\");\nvar NATIVE_SYMBOL = __webpack_require__(/*! ../internals/native-symbol */ \"./node_modules/core-js/internals/native-symbol.js\");\nvar USE_SYMBOL_AS_UID = __webpack_require__(/*! ../internals/use-symbol-as-uid */ \"./node_modules/core-js/internals/use-symbol-as-uid.js\");\n\nvar WellKnownSymbolsStore = shared('wks');\nvar Symbol = global.Symbol;\nvar createWellKnownSymbol = USE_SYMBOL_AS_UID ? Symbol : Symbol && Symbol.withoutSetter || uid;\n\nmodule.exports = function (name) {\n  if (!has(WellKnownSymbolsStore, name)) {\n    if (NATIVE_SYMBOL && has(Symbol, name)) WellKnownSymbolsStore[name] = Symbol[name];\n    else WellKnownSymbolsStore[name] = createWellKnownSymbol('Symbol.' + name);\n  } return WellKnownSymbolsStore[name];\n};\n\n\n//# sourceURL=webpack:///./node_modules/core-js/internals/well-known-symbol.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/modules/es.array.concat.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/core-js/modules/es.array.concat.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nvar $ = __webpack_require__(/*! ../internals/export */ \"./node_modules/core-js/internals/export.js\");\nvar fails = __webpack_require__(/*! ../internals/fails */ \"./node_modules/core-js/internals/fails.js\");\nvar isArray = __webpack_require__(/*! ../internals/is-array */ \"./node_modules/core-js/internals/is-array.js\");\nvar isObject = __webpack_require__(/*! ../internals/is-object */ \"./node_modules/core-js/internals/is-object.js\");\nvar toObject = __webpack_require__(/*! ../internals/to-object */ \"./node_modules/core-js/internals/to-object.js\");\nvar toLength = __webpack_require__(/*! ../internals/to-length */ \"./node_modules/core-js/internals/to-length.js\");\nvar createProperty = __webpack_require__(/*! ../internals/create-property */ \"./node_modules/core-js/internals/create-property.js\");\nvar arraySpeciesCreate = __webpack_require__(/*! ../internals/array-species-create */ \"./node_modules/core-js/internals/array-species-create.js\");\nvar arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ \"./node_modules/core-js/internals/array-method-has-species-support.js\");\nvar wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ \"./node_modules/core-js/internals/well-known-symbol.js\");\nvar V8_VERSION = __webpack_require__(/*! ../internals/engine-v8-version */ \"./node_modules/core-js/internals/engine-v8-version.js\");\n\nvar IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');\nvar MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;\nvar MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded';\n\n// We can't use this feature detection in V8 since it causes\n// deoptimization and serious performance degradation\n// https://github.com/zloirock/core-js/issues/679\nvar IS_CONCAT_SPREADABLE_SUPPORT = V8_VERSION >= 51 || !fails(function () {\n  var array = [];\n  array[IS_CONCAT_SPREADABLE] = false;\n  return array.concat()[0] !== array;\n});\n\nvar SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');\n\nvar isConcatSpreadable = function (O) {\n  if (!isObject(O)) return false;\n  var spreadable = O[IS_CONCAT_SPREADABLE];\n  return spreadable !== undefined ? !!spreadable : isArray(O);\n};\n\nvar FORCED = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;\n\n// `Array.prototype.concat` method\n// https://tc39.github.io/ecma262/#sec-array.prototype.concat\n// with adding support of @@isConcatSpreadable and @@species\n$({ target: 'Array', proto: true, forced: FORCED }, {\n  concat: function concat(arg) { // eslint-disable-line no-unused-vars\n    var O = toObject(this);\n    var A = arraySpeciesCreate(O, 0);\n    var n = 0;\n    var i, k, length, len, E;\n    for (i = -1, length = arguments.length; i < length; i++) {\n      E = i === -1 ? O : arguments[i];\n      if (isConcatSpreadable(E)) {\n        len = toLength(E.length);\n        if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);\n        for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);\n      } else {\n        if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);\n        createProperty(A, n++, E);\n      }\n    }\n    A.length = n;\n    return A;\n  }\n});\n\n\n//# sourceURL=webpack:///./node_modules/core-js/modules/es.array.concat.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/modules/es.array.filter.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/core-js/modules/es.array.filter.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nvar $ = __webpack_require__(/*! ../internals/export */ \"./node_modules/core-js/internals/export.js\");\nvar $filter = __webpack_require__(/*! ../internals/array-iteration */ \"./node_modules/core-js/internals/array-iteration.js\").filter;\nvar arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ \"./node_modules/core-js/internals/array-method-has-species-support.js\");\nvar arrayMethodUsesToLength = __webpack_require__(/*! ../internals/array-method-uses-to-length */ \"./node_modules/core-js/internals/array-method-uses-to-length.js\");\n\nvar HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter');\n// Edge 14- issue\nvar USES_TO_LENGTH = arrayMethodUsesToLength('filter');\n\n// `Array.prototype.filter` method\n// https://tc39.github.io/ecma262/#sec-array.prototype.filter\n// with adding support of @@species\n$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {\n  filter: function filter(callbackfn /* , thisArg */) {\n    return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);\n  }\n});\n\n\n//# sourceURL=webpack:///./node_modules/core-js/modules/es.array.filter.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/modules/es.array.map.js":
-/*!******************************************************!*\
-  !*** ./node_modules/core-js/modules/es.array.map.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nvar $ = __webpack_require__(/*! ../internals/export */ \"./node_modules/core-js/internals/export.js\");\nvar $map = __webpack_require__(/*! ../internals/array-iteration */ \"./node_modules/core-js/internals/array-iteration.js\").map;\nvar arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ \"./node_modules/core-js/internals/array-method-has-species-support.js\");\nvar arrayMethodUsesToLength = __webpack_require__(/*! ../internals/array-method-uses-to-length */ \"./node_modules/core-js/internals/array-method-uses-to-length.js\");\n\nvar HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('map');\n// FF49- issue\nvar USES_TO_LENGTH = arrayMethodUsesToLength('map');\n\n// `Array.prototype.map` method\n// https://tc39.github.io/ecma262/#sec-array.prototype.map\n// with adding support of @@species\n$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {\n  map: function map(callbackfn /* , thisArg */) {\n    return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);\n  }\n});\n\n\n//# sourceURL=webpack:///./node_modules/core-js/modules/es.array.map.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-js/modules/es.function.name.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/core-js/modules/es.function.name.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ \"./node_modules/core-js/internals/descriptors.js\");\nvar defineProperty = __webpack_require__(/*! ../internals/object-define-property */ \"./node_modules/core-js/internals/object-define-property.js\").f;\n\nvar FunctionPrototype = Function.prototype;\nvar FunctionPrototypeToString = FunctionPrototype.toString;\nvar nameRE = /^\\s*function ([^ (]*)/;\nvar NAME = 'name';\n\n// Function instances `.name` property\n// https://tc39.github.io/ecma262/#sec-function-instances-name\nif (DESCRIPTORS && !(NAME in FunctionPrototype)) {\n  defineProperty(FunctionPrototype, NAME, {\n    configurable: true,\n    get: function () {\n      try {\n        return FunctionPrototypeToString.call(this).match(nameRE)[1];\n      } catch (error) {\n        return '';\n      }\n    }\n  });\n}\n\n\n//# sourceURL=webpack:///./node_modules/core-js/modules/es.function.name.js?");
 
 /***/ }),
 
@@ -872,7 +670,7 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar profile_card_1 = __webpack_require__(/*! ./profile-card */ \"./src/profile-card.js\");\nvar profile_like_1 = __webpack_require__(/*! ./profile-like */ \"./src/profile-like.js\");\nvar DetailView = /** @class */ (function () {\n    function DetailView(jquery, user, onChange) {\n        var _this = this;\n        this.like = function () {\n            _this.rated(true);\n        };\n        this.dislike = function () {\n            _this.rated(false);\n        };\n        this.render = function () {\n            var currentProfile = new profile_card_1.ProfileCard(_this.user);\n            var profileLike = new profile_like_1.ProfileLike(_this.like, _this.dislike, _this.detailPage$);\n            return \"\\n      <section class=\\\"detail-page\\\">\\n        \" + currentProfile.render() + \"\\n        \" + profileLike.render() + \"\\n      </selection>\\n      \";\n        };\n        this.jquery = jquery;\n        this.user = user;\n        this.rated = onChange;\n        this.detailPage$ = this.jquery(\"#root\");\n    }\n    return DetailView;\n}());\nexports.DetailView = DetailView;\n\n\n//# sourceURL=webpack:///./src/detail-view.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar profile_card_1 = __webpack_require__(/*! ./profile-card */ \"./src/profile-card.ts\");\nvar profile_like_1 = __webpack_require__(/*! ./profile-like */ \"./src/profile-like.ts\");\nvar DetailView = /** @class */ (function () {\n    function DetailView(jquery, user, onChange) {\n        var _this = this;\n        this.like = function () {\n            _this.rated(true);\n        };\n        this.dislike = function () {\n            _this.rated(false);\n        };\n        this.render = function () {\n            var currentProfile = new profile_card_1.ProfileCard(_this.user);\n            var profileLike = new profile_like_1.ProfileLike(_this.like, _this.dislike, _this.detailPage$);\n            return \"\\n      <section class=\\\"detail-page\\\">\\n        \" + currentProfile.render() + \"\\n        \" + profileLike.render() + \"\\n      </selection>\\n      \";\n        };\n        this.jquery = jquery;\n        this.user = user;\n        this.rated = onChange;\n        this.detailPage$ = this.jquery(\"#root\");\n    }\n    return DetailView;\n}());\nexports.DetailView = DetailView;\n\n\n//# sourceURL=webpack:///./src/detail-view.ts?");
 
 /***/ }),
 
@@ -888,15 +686,15 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 
 /***/ }),
 
-/***/ "./src/listview.js":
+/***/ "./src/listview.ts":
 /*!*************************!*\
-  !*** ./src/listview.js ***!
+  !*** ./src/listview.ts ***!
   \*************************/
-/*! exports provided: ListView */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ListView\", function() { return ListView; });\n/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ \"./node_modules/core-js/modules/es.array.concat.js\");\n/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var core_js_modules_es_array_filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.array.filter */ \"./node_modules/core-js/modules/es.array.filter.js\");\n/* harmony import */ var core_js_modules_es_array_filter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_filter__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.map */ \"./node_modules/core-js/modules/es.array.map.js\");\n/* harmony import */ var core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.function.name */ \"./node_modules/core-js/modules/es.function.name.js\");\n/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.object.define-property */ \"./node_modules/core-js/modules/es.object.define-property.js\");\n/* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_4__);\n\n\n\n\n\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar ListView = /*#__PURE__*/function () {\n  function ListView(allUsers) {\n    _classCallCheck(this, ListView);\n\n    _defineProperty(this, \"allUsers\", void 0);\n\n    this.allUsers = allUsers;\n  }\n\n  _createClass(ListView, [{\n    key: \"render\",\n    value: function render() {\n      var result = \"<ul class='list-group'>\";\n      this.allUsers.map(function (user) {\n        return console.log(user);\n      }).filter(function (user) {\n        return user && user.like && user.like == false;\n      }).map(function (user) {\n        result += \"<li class=\\\"list-group-item\\\">\".concat(user.name.title, \" \").concat(user.name.first, \" \").concat(user.name.last, \"</li>\");\n      });\n      return result + \"</ul>\";\n    }\n  }]);\n\n  return ListView;\n}();\n\n//# sourceURL=webpack:///./src/listview.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar ListView = /** @class */ (function () {\n    function ListView(allUsers) {\n        this.allUsers = allUsers;\n    }\n    ListView.prototype.render = function () {\n        var result = \"<ul class='list-group'>\";\n        this.allUsers\n            //.map(user => console.log(user))\n            .filter(function (user) { return user.liked && user.liked == true; })\n            .map(function (user) {\n            result += \"<li class=\\\"list-group-item\\\">\" + user.name.title + \" \" + user.name.first + \" \" + user.name.last + \"</li>\";\n        });\n        return result + \"</ul>\";\n    };\n    return ListView;\n}());\nexports.ListView = ListView;\n\n\n//# sourceURL=webpack:///./src/listview.ts?");
 
 /***/ }),
 
@@ -912,27 +710,27 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
-/***/ "./src/profile-card.js":
+/***/ "./src/profile-card.ts":
 /*!*****************************!*\
-  !*** ./src/profile-card.js ***!
+  !*** ./src/profile-card.ts ***!
   \*****************************/
-/*! exports provided: ProfileCard */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ProfileCard\", function() { return ProfileCard; });\n/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ \"./node_modules/core-js/modules/es.array.concat.js\");\n/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.function.name */ \"./node_modules/core-js/modules/es.function.name.js\");\n/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.object.define-property */ \"./node_modules/core-js/modules/es.object.define-property.js\");\n/* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar ProfileCard = function ProfileCard(user) {\n  var _this = this;\n\n  _classCallCheck(this, ProfileCard);\n\n  _defineProperty(this, \"user\", void 0);\n\n  _defineProperty(this, \"render\", function () {\n    return \" \\n    <div id=\\\"profile-view\\\">\\n    <div class=\\\"card\\\">\\n      <div class=\\\"card-header\\\">\\n      \".concat(_this.user.name.title, \" \").concat(_this.user.name.first, \" \").concat(_this.user.name.last, \" \\n      </div>\\n      <img class=\\\"card-img-top\\\" src=\\\"\").concat(_this.user.picture.large, \"\\\" alt=\\\"Card image cap\\\">\\n      <div class=\\\"card-body\\\">\\n        <h5 class=\\\"card-title\\\">\\n        \").concat(_this.user.login.username, \"\\n        </h5>\\n        <p class=\\\"card-text\\\">\\n        \").concat(_this.user.location.city, \", \").concat(_this.user.location.state, \", \").concat(_this.user.location.country, \"\\n        </p>\\n      </div>\\n    </div>\\n    </div>\");\n  });\n\n  this.user = user;\n  console.log(\"ProfileCard User\", this.user);\n};\n\n//# sourceURL=webpack:///./src/profile-card.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar ProfileCard = /** @class */ (function () {\n    function ProfileCard(user) {\n        var _this = this;\n        this.render = function () {\n            return \" \\n    <div id=\\\"profile-view\\\">\\n    <div class=\\\"card\\\">\\n      <div class=\\\"card-header\\\">\\n      \" + _this.user.name.title + \" \" + _this.user.name.first + \" \" + _this.user.name.last + \" \\n      </div>\\n      <img class=\\\"card-img-top\\\" src=\\\"\" + _this.user.picture.large + \"\\\" alt=\\\"Card image cap\\\">\\n      <div class=\\\"card-body\\\">\\n        <h5 class=\\\"card-title\\\">\\n        \" + _this.user.login.username + \"\\n        </h5>\\n        <p class=\\\"card-text\\\">\\n        \" + _this.user.location.city + \", \" + _this.user.location.state + \", \" + _this.user.location.country + \"\\n        </p>\\n      </div>\\n    </div>\\n    </div>\";\n        };\n        this.user = user;\n        console.log(\"ProfileCard User\", this.user);\n    }\n    return ProfileCard;\n}());\nexports.ProfileCard = ProfileCard;\n\n\n//# sourceURL=webpack:///./src/profile-card.ts?");
 
 /***/ }),
 
-/***/ "./src/profile-like.js":
+/***/ "./src/profile-like.ts":
 /*!*****************************!*\
-  !*** ./src/profile-like.js ***!
+  !*** ./src/profile-like.ts ***!
   \*****************************/
-/*! exports provided: ProfileLike */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"ProfileLike\", function() { return ProfileLike; });\n/* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.define-property */ \"./node_modules/core-js/modules/es.object.define-property.js\");\n/* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var bootstrap_icons_icons_heart_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-icons/icons/heart.svg */ \"./node_modules/bootstrap-icons/icons/heart.svg\");\n\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\nvar ProfileLike = /*#__PURE__*/function () {\n  function ProfileLike(likeFn, dislikeFn, detailPage$) {\n    _classCallCheck(this, ProfileLike);\n\n    _defineProperty(this, \"likeFn\", void 0);\n\n    _defineProperty(this, \"dislikeFn\", void 0);\n\n    _defineProperty(this, \"detailPage$\", void 0);\n\n    this.likeFn = likeFn;\n    this.dislikeFn = dislikeFn;\n    this.detailPage$ = detailPage$;\n    this.onLikeInit();\n    this.onDislikeInit();\n  }\n\n  _createClass(ProfileLike, [{\n    key: \"onLikeInit\",\n    value: function onLikeInit() {\n      var _this = this;\n\n      this.detailPage$.on(\"click\", \"button#like\", function (e) {\n        _this.likeFn();\n      });\n    }\n  }, {\n    key: \"onDislikeInit\",\n    value: function onDislikeInit() {\n      var _this2 = this;\n\n      this.detailPage$.on(\"click\", \"button#dislike\", function (e) {\n        _this2.dislikeFn();\n      });\n    }\n  }, {\n    key: \"render\",\n    value: function render() {\n      return \"\\n        <div class=\\\"card\\\">\\n        <div class=\\\"text-center p-2 mx-auto\\\">\\n          <button type=\\\"button\\\" class=\\\"btn btn-success btn-lg\\\" id=\\\"like\\\">\\n            <img src=\\\"/node_modules/bootstrap-icons/icons/heart.svg\\\" class=\\\"rounded\\\" alt=\\\"\\\" width=\\\"128\\\" height=\\\"128\\\" title=\\\"Heart-Fill\\\">\\n            <span class=\\\"output\\\"></span>\\n          </button>\\n          <button type=\\\"button\\\" class=\\\"btn btn-info btn-lg\\\" id=\\\"dislike\\\">\\n            <img src=\\\"/node_modules/bootstrap-icons/icons/heart.svg\\\" class=\\\"rounded\\\" alt=\\\"\\\" width=\\\"128\\\" height=\\\"128\\\" title=\\\"Heart\\\">\\n            <span class=\\\"minus-output\\\"></span>\\n          </button>\\n        </div>\\n        </div>\\n        \";\n    }\n  }]);\n\n  return ProfileLike;\n}();\n\n//# sourceURL=webpack:///./src/profile-like.js?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\n__webpack_require__(/*! bootstrap-icons/icons/heart.svg */ \"./node_modules/bootstrap-icons/icons/heart.svg\");\nvar ProfileLike = /** @class */ (function () {\n    function ProfileLike(likeFn, dislikeFn, detailPage$) {\n        this.likeFn = likeFn;\n        this.dislikeFn = dislikeFn;\n        this.detailPage$ = detailPage$;\n        this.onLikeInit();\n        this.onDislikeInit();\n    }\n    ProfileLike.prototype.onLikeInit = function () {\n        var _this = this;\n        this.detailPage$.on(\"click\", \"button#like\", function (e) {\n            _this.likeFn();\n        });\n    };\n    ProfileLike.prototype.onDislikeInit = function () {\n        var _this = this;\n        this.detailPage$.on(\"click\", \"button#dislike\", function (e) {\n            _this.dislikeFn();\n        });\n    };\n    ProfileLike.prototype.render = function () {\n        return \"\\n        <div class=\\\"card\\\">\\n        <div class=\\\"text-center p-2 mx-auto\\\">\\n          <button type=\\\"button\\\" class=\\\"btn btn-success btn-lg\\\" id=\\\"like\\\">\\n            <img src=\\\"/node_modules/bootstrap-icons/icons/heart.svg\\\" class=\\\"rounded\\\" alt=\\\"\\\" width=\\\"128\\\" height=\\\"128\\\" title=\\\"Heart-Fill\\\">\\n            <span class=\\\"output\\\"></span>\\n          </button>\\n          <button type=\\\"button\\\" class=\\\"btn btn-info btn-lg\\\" id=\\\"dislike\\\">\\n            <img src=\\\"/node_modules/bootstrap-icons/icons/heart.svg\\\" class=\\\"rounded\\\" alt=\\\"\\\" width=\\\"128\\\" height=\\\"128\\\" title=\\\"Heart\\\">\\n            <span class=\\\"minus-output\\\"></span>\\n          </button>\\n        </div>\\n        </div>\\n        \";\n    };\n    return ProfileLike;\n}());\nexports.ProfileLike = ProfileLike;\n\n\n//# sourceURL=webpack:///./src/profile-like.ts?");
 
 /***/ }),
 
@@ -955,7 +753,7 @@ eval("var api = __webpack_require__(/*! ../node_modules/style-loader/dist/runtim
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar detail_view_1 = __webpack_require__(/*! ./detail-view */ \"./src/detail-view.ts\");\nvar navigation_1 = __webpack_require__(/*! ./navigation */ \"./src/navigation.js\");\nvar listview_1 = __webpack_require__(/*! ./listview */ \"./src/listview.js\");\nvar ViewController = /** @class */ (function () {\n    function ViewController(jquery) {\n        var _this = this;\n        this.pageName = {\n            detailPage: 0,\n            listPage: 1\n        };\n        this.currentUser = 0;\n        this.currentPage = this.pageName.detailPage;\n        this.refresh = function (liked) {\n            _this.allUsers[_this.currentUser].liked = liked;\n            _this.incrementIndex();\n            _this.mount();\n        };\n        this.mount = function () {\n            _this.pages = [\n                new detail_view_1.DetailView(_this.jquery, _this.allUsers[_this.currentUser], _this.refresh),\n                new listview_1.ListView(_this.allUsers)\n            ];\n            var nav = new navigation_1.Navigation(_this.jquery);\n            _this.root$.html(\"\\n        \" + nav.render() + \"\\n        \" + _this.pages[_this.currentPage].render() + \"\\n      \");\n        };\n        this.jquery = jquery;\n        this.root$ = this.jquery(\"#root\");\n        this.getUsers(100).then(function (users) {\n            _this.allUsers = users.results;\n            _this.mount();\n        });\n    }\n    ViewController.prototype.incrementIndex = function () {\n        this.currentUser++;\n    };\n    ViewController.prototype.getUsers = function (amount) {\n        return fetch(\"https://randomuser.me/api/?results=\" + amount).then(function (response) {\n            return response.json();\n        });\n    };\n    return ViewController;\n}());\nexports.ViewController = ViewController;\n\n\n//# sourceURL=webpack:///./src/view-controller.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar detail_view_1 = __webpack_require__(/*! ./detail-view */ \"./src/detail-view.ts\");\nvar navigation_1 = __webpack_require__(/*! ./navigation */ \"./src/navigation.js\");\nvar listview_1 = __webpack_require__(/*! ./listview */ \"./src/listview.ts\");\nvar PageName;\n(function (PageName) {\n    PageName[PageName[\"detailPage\"] = 0] = \"detailPage\";\n    PageName[PageName[\"listPage\"] = 1] = \"listPage\";\n})(PageName || (PageName = {}));\nvar ViewController = /** @class */ (function () {\n    function ViewController(jquery) {\n        var _this = this;\n        this.currentUser = 0;\n        this.currentPage = PageName.detailPage;\n        this.refresh = function (liked) {\n            _this.allUsers[_this.currentUser].liked = liked;\n            _this.incrementIndex();\n            _this.mount();\n        };\n        this.mount = function () {\n            _this.pages = [\n                new detail_view_1.DetailView(_this.jquery, _this.allUsers[_this.currentUser], _this.refresh),\n                new listview_1.ListView(_this.allUsers)\n            ];\n            var nav = new navigation_1.Navigation(_this.jquery);\n            _this.root$.html(\"\\n        \" + nav.render() + \"\\n        \" + _this.pages[_this.currentPage].render() + \"\\n      \");\n        };\n        this.jquery = jquery;\n        this.root$ = this.jquery(\"#root\");\n        this.getUsers(100).then(function (users) {\n            _this.allUsers = users.results;\n            _this.mount();\n        });\n    }\n    ViewController.prototype.incrementIndex = function () {\n        this.currentUser++;\n    };\n    ViewController.prototype.getUsers = function (amount) {\n        return fetch(\"https://randomuser.me/api/?results=\" + amount).then(function (response) {\n            return response.json();\n        });\n    };\n    return ViewController;\n}());\nexports.ViewController = ViewController;\n\n\n//# sourceURL=webpack:///./src/view-controller.ts?");
 
 /***/ })
 

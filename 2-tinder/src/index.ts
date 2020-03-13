@@ -4,5 +4,5 @@ import './style.css';
 import { ViewController } from "./view-controller";
 
 $(document).ready(function() {
-  const controllerView: any = new ViewController($);
+  const controllerView: ViewController = new ViewController($);
 });
