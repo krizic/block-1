@@ -1,9 +1,12 @@
 
 export class Navigation {
-    jquery;
-    constructor(jquery) {
+
+    jquery: JQueryStatic;
+
+    constructor(jquery : JQueryStatic) {
       this.jquery = jquery;
     }
+
   
     render() {
       return `<nav class="navbar navbar-expand-lg navbar-light bg-light">

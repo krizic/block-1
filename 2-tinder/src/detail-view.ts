@@ -10,7 +10,7 @@ export class DetailView implements IPage {
     detailPage$: any;
     rated: (rating: boolean) => void;
   
-    constructor(jquery, user: User, onChange: (rating: boolean) => void) {
+    constructor(jquery: JQueryStatic, user: User, onChange: (rating: boolean) => void) {
       this.jquery = jquery;
       this.user = user;
       this.rated = onChange;
