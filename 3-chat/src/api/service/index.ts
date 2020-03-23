@@ -2,7 +2,7 @@ import { IFindChatResponse } from "../interface/chat";
 
 export class ChatService {
   static getAll(): Promise<IFindChatResponse> {
-    return fetch("http://localhost:5984/test/_find", {
+    return fetch("http://home.vkrizic.com:5984/test/_find", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
