@@ -10,13 +10,15 @@ export class ViewController {
 
   constructor(private $: JQueryStatic) {
     this.rootSelector$ = $(this.rootSelector);
-    this.currentPage = AuthService.isUserKnown() ? new ChatPage() : new StartPage(this.rootSelector$);
+    this.currentPage = AuthService.isUserKnown() ? new ChatPage(this.rootSelector$) : new StartPage(this.rootSelector$, this.goToPageChat);
     this.render();
   }
 
-  changePage(newPage: IPage): void {
-    this.currentPage = newPage;
+  goToPageChat = (): void => {
+    this.currentPage = new ChatPage(this.rootSelector$);
+    this.render();
   }
+
 
   render(): void {
     this.$(this.rootSelector).html(this.currentPage.render());

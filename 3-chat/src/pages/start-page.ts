@@ -7,7 +7,7 @@ export class StartPage implements IPage {
 
   private readonly name = "start-page";
 
-  constructor(private $: JQuery){
+  constructor(private $: JQuery, private nextPage: () => void){
     this.$.on("click", `#${this.name} .username-submit`, this.onUsernameSubmit);
   }
 
@@ -17,7 +17,7 @@ export class StartPage implements IPage {
     
     if (inputEl.value) {
       AuthService.setUser(inputEl.value);
-      // redirection
+      this.nextPage();
     } else {
       console.log("there is no value");
     }

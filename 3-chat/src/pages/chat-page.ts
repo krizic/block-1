@@ -1,7 +1,29 @@
 import { IPage } from "./interfaces/page";
+import { ChatService } from "./../api/service";
+import "./chat-page.css";
+import { IChat, IFindChatResponse } from "../api/interface/chat";
 
 export class ChatPage implements IPage {
-  render(): string{
-      return "CHAT PAGE";
-  } 
+
+  messages: IChat[];
+
+  constructor(private $: JQuery) {
+    ChatService.getAll().then(result => {
+      this.messages = result.docs;
+      this.render();
+    });
+
+    
+  }
+
+  render = (): string => {
+    let result = "<ul class='list-group'>";
+    this.messages
+      .map(message => {
+        result += `<li class="list-group-item othermessage" id="${message._id} ">${message.sender} <br/> ${message.msg}}</li>`;
+      });
+    result += `</ul>`;
+    return `${result}`;
+
+  }
 }
