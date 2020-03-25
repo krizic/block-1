@@ -1,13 +1,13 @@
 import {IPage} from "./interfaces/page";
-import {UsernameStorageKey} from "../constants";
+import {PageEnum} from "../constants";
 import "./start-page.css";
 import { AuthService } from '../services';
 
 export class StartPage implements IPage {
 
-  private readonly name = "start-page";
+  readonly name = "start-page";
 
-  constructor(private $: JQuery){
+  constructor(private $: JQuery, private changePage: (page: PageEnum) => void | any ){
     this.$.on("click", `#${this.name} .username-submit`, this.onUsernameSubmit);
   }
 
@@ -17,7 +17,7 @@ export class StartPage implements IPage {
     
     if (inputEl.value) {
       AuthService.setUser(inputEl.value);
-      // redirection
+      this.changePage(PageEnum.ChatPage);
     } else {
       console.log("there is no value");
     }
