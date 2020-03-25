@@ -1,15 +1,15 @@
-import { IChat } from "./interfaces/page";
+import { IPage } from "./interfaces/page";
 
-export class ChatPage implements IChat {
+export class ChatPage implements IPage {
 
-  private chat = "chat-page";
+  public readonly name = "chat-page";
 
   constructor(private $: JQuery){
-    this.$.on("click", `#${this.chat} .send_btn`, this.onMsgSubmit);
+    this.$.on("click", `#${this.name} .send_btn`, this.onMsgSubmit);
   }
 
-  onMsgSubmit = (e) => {
-    const msgSend: HTMLInputElement = this.$.find(`#${this.chat}  textarea.type_msg`)[0] as HTMLInputElement;
+  onMsgSubmit = () => {
+    const msgSend: HTMLInputElement = this.$.find(`#${this.name}  textarea.type_msg`)[0] as HTMLInputElement;
     console.log(msgSend.value);
     
     if (msgSend.value) {
@@ -22,7 +22,7 @@ export class ChatPage implements IChat {
 
   render(): string {
     return `
-    <section id="${this.chat}>${this.chatTemplate()}</section>  
+    <section id="${this.name}>${this.chatTemplate()}</section>  
    `;
   } 
   
