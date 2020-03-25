@@ -17,11 +17,13 @@ export class ChatPage implements IPage {
   }
 
   render = (): string => {
+    console.log("render");
+    console.log(this.messages);
     let result = "<ul class='list-group'>";
-    this.messages
-      .map(message => {
-        result += `<li class="list-group-item othermessage" id="${message._id} ">${message.sender} <br/> ${message.msg}}</li>`;
-      });
+    // this.messages
+    //   .map(message => {
+    //     result += `<li class="list-group-item othermessage" id="${message._id} ">${message.sender} <br/> ${message.msg}}</li>`;
+    //   });
     result += `</ul>`;
     return `${result}`;
 
