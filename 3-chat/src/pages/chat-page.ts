@@ -5,13 +5,26 @@ import {AuthService} from "../services";
 
 export class ChatPage implements IPage {
   public readonly name = "chat-page";
-  private chatMsgs: IChat[] = [];
+  //private chatMsgs: IChat[] = [];
+
+  state = {
+    chatMsgs: []
+  };
 
   constructor(
     private $: JQuery,
     private onChange: () => void,
     private chatService: ChatService
   ) {
+
+    this.state = new Proxy(this.state, {
+      set: (object, key, value) => {
+        object[key] = value
+        this.onChange();
+        return true;
+      }
+    });
+
     this.fetchData();
     this.chatService.syncChanges(this.onNewMessages);
     this.$.on("click", `#${this.name} .send_btn`, this.onMsgSubmit);
@@ -44,8 +57,7 @@ export class ChatPage implements IPage {
 
   fetchData = (): void => {
     this.chatService.getAll().then(result => {
-      this.chatMsgs = result.docs;
-      this.onChange();
+      this.state.chatMsgs = result.docs;
       console.log("Chats Reloaded!");
     });
   };
@@ -61,7 +73,7 @@ export class ChatPage implements IPage {
   }
 
   chatItemTemplate = (): string => {
-    const template = this.chatMsgs.map(chat => {
+    const template = this.state.chatMsgs.map(chat => {
       return `
         <div class="justify-content-start mb-4">
           <div class="msg_container">

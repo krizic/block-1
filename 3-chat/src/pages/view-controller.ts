@@ -11,7 +11,7 @@ export class ViewController {
   rootSelector$: JQuery;
   chatService: ChatService = ChatService.getInstance();
 
-  private pages: IPage[]
+  private pages: IPage[];
 
   constructor(private $: JQueryStatic) {
     this.rootSelector$ = $(this.rootSelector);
