@@ -1,16 +1,26 @@
 import * as React from "react";
-import {Button, Form, Card} from "semantic-ui-react";
+import {
+  Button,
+  Form,
+  Segment,
+  Grid,
+  Divider,
+  List,
+  Header,
+} from "semantic-ui-react";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 
 import {ApiService} from "../api";
 import "./start.scss";
-
+import {LocalApi, ISessionAccess} from "../services/local-storage";
+import {timeFormat} from "../utils";
 
 export interface IStartProps extends RouteComponentProps {}
 
 export interface IStartState {
   form: IForm;
   valid?: IForm;
+  previousSessions: ISessionAccess[] | null;
 }
 
 interface IForm {
@@ -21,7 +31,7 @@ interface IForm {
 
 enum FormField {
   session_name = "session_name",
-  session_pin = "session_pin"
+  session_pin = "session_pin",
 }
 
 class Start extends React.Component<IStartProps, IStartState> {
@@ -32,6 +42,8 @@ class Start extends React.Component<IStartProps, IStartState> {
       session_name: "",
       session_pin: "",
     },
+
+    previousSessions: LocalApi.getSessions(),
   };
 
   componentDidMount() {
@@ -45,15 +57,22 @@ class Start extends React.Component<IStartProps, IStartState> {
       valid: Object.keys(formData).reduce((next: any, current) => {
         next[current] = formData[current] !== "" ? "valid" : "invalid";
         return next;
-      }, {}) as IForm
+      }, {}) as IForm,
     });
     if (formData.session_name !== "" && formData.session_pin !== "") {
-      this.api.post(formData).then((response) => {
-        if(response.ok) {
+      const newSession = {...formData, ...{created_at: new Date().getTime()}};
+      this.api.post(newSession).then((response) => {
+        if (response.ok) {
+          LocalApi.saveSession({
+            _id: response.id,
+            session_name: formData.session_name,
+            session_pin: formData.session_pin,
+            created_at: newSession.created_at,
+          });
           this.props.history.push(`/po-page?id=${response.id}`);
         }
       });
-    } 
+    }
   };
 
   onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,45 +84,102 @@ class Start extends React.Component<IStartProps, IStartState> {
     this.setState({form});
   };
 
+  onPreviousSessionDelete = (event: React.MouseEvent, sessionId: string) => {
+    event.stopPropagation();
+    this.api.delete(sessionId).then((response) => {
+      if (response.ok) {
+        LocalApi.deleteSession(sessionId);
+        this.setState({previousSessions: LocalApi.getSessions()});
+      }
+    });
+  };
+
+  onSessionLinkClick = (sessionId: string) => {
+    this.props.history.push(`/po-page?id=${sessionId}`);
+  };
+
   public render() {
     return (
       <div id="start-page">
-        <div className="ui input">
-          <Card>
-            <Card.Content>
-              <Card.Header>Session Info</Card.Header>
-            </Card.Content>
-            <Card.Content>
+        <Segment raised>
+          <Grid columns={2} stackable>
+            <Grid.Column verticalAlign="middle">
+              <Header textAlign="center">New Session</Header>
               <Form
                 onSubmit={(e) => {
                   this.onFormSubmit(this.state.form);
                 }}
               >
-                <Form.Field>
-                  <Form.Input
-                    name={FormField.session_name}
-                    value={this.state.form.session_name}
-                    label="Session Name"
-                    onChange={this.onInputChange}
-                    className={this.state.valid?.session_name}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Form.Input
-                    name={FormField.session_pin}
-                    value={this.state.form.session_pin}
-                    label="Session PIN"
-                    onChange={this.onInputChange}
-                    className={this.state.valid?.session_pin}
-                  />
-                </Form.Field>
+                <Form.Input
+                  required
+                  fluid
+                  icon="clock outline"
+                  iconPosition="left"
+                  name={FormField.session_name}
+                  value={this.state.form.session_name}
+                  label="Session Name"
+                  placeholder="Session Name"
+                  onChange={this.onInputChange}
+                  className={this.state.valid?.session_name}
+                />
+                <Form.Input
+                  required
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  name={FormField.session_pin}
+                  value={this.state.form.session_pin}
+                  label="Session PIN"
+                  placeholder="Session PIN"
+                  onChange={this.onInputChange}
+                  className={this.state.valid?.session_pin}
+                />
                 <Button type="submit" primary>
                   Submit
                 </Button>
               </Form>
-            </Card.Content>
-          </Card>
-        </div>
+            </Grid.Column>
+            <Grid.Column verticalAlign="top">
+              <Header textAlign="center">Recent Sessions</Header>
+              <List divided verticalAlign="middle">
+                {this.state.previousSessions?.length ? (
+                  this.state.previousSessions?.map((session) => {
+                    return (
+                      <List.Item
+                        as="a"
+                        key={session._id}
+                        onClick={() => {
+                          this.onSessionLinkClick(session._id);
+                        }}
+                      >
+                        <List.Content floated="right">
+                          <Button
+                            icon="times circle outline"
+                            onClick={(e) => {
+                              this.onPreviousSessionDelete(e, session._id);
+                            }}
+                          ></Button>
+                        </List.Content>
+                        <List.Icon name="clock outline" verticalAlign="middle" />
+                        <List.Content>
+                          <List.Header>{session.session_name}</List.Header>
+                          <List.Description>
+                            {timeFormat(session.created_at)}
+                          </List.Description>
+                        </List.Content>
+                      </List.Item>
+                    );
+                  })
+                ) : (
+                  <List.Item>
+                    <List.Content>No previous sessions</List.Content>
+                  </List.Item>
+                )}
+              </List>
+            </Grid.Column>
+          </Grid>
+          <Divider vertical>Or</Divider>
+        </Segment>
       </div>
     );
   }

@@ -12,7 +12,7 @@ export class ApiService {
     return this.db.info();
   }
 
-  post(data: any) {
+  post(data: Partial<ISessionDb>) {
     return this.db.post(data);
   }
 
@@ -23,6 +23,12 @@ export class ApiService {
   update(document: PouchDB.Core.PutDocument<ISessionDb>) {
     document.last_updated = new Date().getTime();
     return this.db.put(document);
+  }
+
+  delete(sessionId: string) {
+    return this.getSession(sessionId).then((session) => {
+      return this.db.remove({_id: sessionId, _rev: session._rev})
+    })
   }
 
   onChange(

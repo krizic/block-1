@@ -32,7 +32,6 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
   }
 
   getSession = () => {
-      debugger;
     this.api.getSession(this.sessionId!).then((session) => {
       this.setState({session: session});
     });

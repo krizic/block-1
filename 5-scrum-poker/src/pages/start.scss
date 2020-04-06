@@ -1,6 +1,10 @@
 div#start-page {
-    margin: 35vh auto 0 auto;
-    width: 21rem;
+    margin: 0 auto 0 auto;
+    width: 45rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .ui.form .field.invalid input {
