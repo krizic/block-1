@@ -1,40 +1,68 @@
 import * as React from "react";
 import {Button, Form, Card} from "semantic-ui-react";
+import {withRouter, RouteComponentProps} from "react-router-dom";
 
 import {ApiService} from "../api";
 import "./start.scss";
 
-export interface IStartProps {}
+
+export interface IStartProps extends RouteComponentProps {}
 
 export interface IStartState {
-  sName: string;
-  sPin: string;
+  form: IForm;
+  valid?: IForm;
 }
 
-export default class Start extends React.Component<IStartProps, IStartState> {
-  api: ApiService = new ApiService();
+interface IForm {
+  session_name: string;
+  session_pin: string;
+  [key: string]: string;
+}
 
-  state = {
-    sName: "123",
-    sPin: "",
+enum FormField {
+  session_name = "session_name",
+  session_pin = "session_pin"
+}
+
+class Start extends React.Component<IStartProps, IStartState> {
+  api: ApiService = ApiService.Instance;
+
+  state: IStartState = {
+    form: {
+      session_name: "",
+      session_pin: "",
+    },
   };
 
   componentDidMount() {
     this.api.info().then((data) => {
-      console.log(data);
+      console.log("info", data);
     });
   }
 
-  onFormSubmit = (formData: any) => {
-    this.api.post(this.state);
+  onFormSubmit = (formData: IForm) => {
+    this.setState({
+      valid: Object.keys(formData).reduce((next: any, current) => {
+        next[current] = formData[current] !== "" ? "valid" : "invalid";
+        return next;
+      }, {}) as IForm
+    });
+    if (formData.session_name !== "" && formData.session_pin !== "") {
+      this.api.post(formData).then((response) => {
+        if(response.ok) {
+          this.props.history.push(`/po-page?id=${response.id}`);
+        }
+      });
+    } 
   };
 
-  onNameChange = (event: any) => {
-    this.setState({sName: event.currentTarget.value});
-  };
+  onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const form = {
+      ...this.state.form,
+      ...{[event.currentTarget.name]: event.currentTarget.value},
+    };
 
-  onPinChange = (event: any) => {
-    this.setState({sPin: event.currentTarget.value});
+    this.setState({form});
   };
 
   public render() {
@@ -46,19 +74,27 @@ export default class Start extends React.Component<IStartProps, IStartState> {
               <Card.Header>Session Info</Card.Header>
             </Card.Content>
             <Card.Content>
-              <Form onSubmit={this.onFormSubmit}>
+              <Form
+                onSubmit={(e) => {
+                  this.onFormSubmit(this.state.form);
+                }}
+              >
                 <Form.Field>
                   <Form.Input
-                    value={this.state.sName}
+                    name={FormField.session_name}
+                    value={this.state.form.session_name}
                     label="Session Name"
-                    onChange={this.onNameChange}
+                    onChange={this.onInputChange}
+                    className={this.state.valid?.session_name}
                   />
                 </Form.Field>
                 <Form.Field>
                   <Form.Input
-                    value={this.state.sPin}
+                    name={FormField.session_pin}
+                    value={this.state.form.session_pin}
                     label="Session PIN"
-                    onChange={this.onPinChange}
+                    onChange={this.onInputChange}
+                    className={this.state.valid?.session_pin}
                   />
                 </Form.Field>
                 <Button type="submit" primary>
@@ -72,3 +108,5 @@ export default class Start extends React.Component<IStartProps, IStartState> {
     );
   }
 }
+
+export default withRouter(Start);

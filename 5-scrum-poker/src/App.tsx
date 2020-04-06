@@ -2,6 +2,7 @@ import React from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 import StartPage from "./pages/start";
 import DeveloperPage from  "./pages/developer";
+import PoPage from  "./pages/po-page";
 import "./App.css";
 
 function App() {
@@ -10,8 +11,11 @@ function App() {
       {/* Sharable across the pages */}
 
       <Switch>
-      <Route path="/developer">
+        <Route path="/developer">
           <DeveloperPage/>
+        </Route>
+        <Route path="/po-page">
+          <PoPage/>
         </Route>
         <Route path="/">
           <StartPage/>
