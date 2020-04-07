@@ -86,11 +86,9 @@ class Start extends React.Component<IStartProps, IStartState> {
 
   onPreviousSessionDelete = (event: React.MouseEvent, sessionId: string) => {
     event.stopPropagation();
-    this.api.delete(sessionId).then((response) => {
-      if (response.ok) {
-        LocalApi.deleteSession(sessionId);
-        this.setState({previousSessions: LocalApi.getSessions()});
-      }
+    this.api.delete(sessionId).finally(() => {
+      LocalApi.deleteSession(sessionId);
+      this.setState({previousSessions: LocalApi.getSessions()});
     });
   };
 
@@ -160,7 +158,10 @@ class Start extends React.Component<IStartProps, IStartState> {
                             }}
                           ></Button>
                         </List.Content>
-                        <List.Icon name="clock outline" verticalAlign="middle" />
+                        <List.Icon
+                          name="clock outline"
+                          verticalAlign="middle"
+                        />
                         <List.Content>
                           <List.Header>{session.session_name}</List.Header>
                           <List.Description>

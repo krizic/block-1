@@ -2,12 +2,21 @@ import * as React from "react";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 import {ISessionDb} from "../api/interfaces";
 import {ApiService} from "../api";
-import {Button} from "semantic-ui-react";
+import {Button, Segment, Form, Tab} from "semantic-ui-react";
+
+import "./po-page.scss";
+import Estimations from '../components/estimations';
+
+interface IEstimationForm {
+  estimation_name: string;
+  estimation_description: string;
+}
 
 export interface IPoPageProps extends RouteComponentProps {}
 
 export interface IPoPageState {
   session?: PouchDB.Core.Document<ISessionDb> & PouchDB.Core.GetMeta;
+  estimationForm?: Partial<IEstimationForm>;
 }
 
 class PoPage extends React.Component<IPoPageProps, IPoPageState> {
@@ -35,8 +44,30 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
     this.api.getSession(this.sessionId!).then((session) => {
       this.setState({session: session});
     });
-  }
+  };
 
+  onEstimationFormInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const estimationForm = {
+      ...this.state.estimationForm,
+      ...{[event.currentTarget.name]: event.currentTarget.value},
+    };
+
+    this.setState({estimationForm});
+  };
+
+  onEstimationFormSubmit = (form?: Partial<IEstimationForm>) => {
+    if (form && form.estimation_name) {
+      this.api.createNewEstimation(this.state.session!, {
+        name: form.estimation_name,
+        description: form.estimation_description,
+        timestamp: new Date().getTime(),
+      });
+    }
+  };
+
+  // tbd
   onButtonClick = () => {
     this.api.update({
       _id: this.state.session?._id,
@@ -44,18 +75,81 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
     });
   };
 
+  panes = [
+    {menuItem: "Tab 1", render: () => <Tab.Pane>Tab 1 Content</Tab.Pane>},
+    {menuItem: "Tab 2", render: () => <Tab.Pane>Tab 2 Content</Tab.Pane>},
+    {menuItem: "Tab 3", render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>},
+  ];
+
+
+
+
+
+  // TabExampleVerticalTabularRight = () => {
+
+  //   const estimations = this.state.session?.estimations;
+
+  //   // const estimationPanes =  Object.keys(this.state.session?.estimations
+  //   return (<Tab
+  //     menu={fluid: true, vertical: true, tabular: "right"}
+  //     panes={this.state.session?.estimations}
+  //   />)
+  //   };
+
   public render() {
     return (
-      <div>
-        <h1>PO WORKS!!! {this.sessionId}</h1>
+      <div id="po-page">
+        <Segment.Group>
+          <Segment size="big">
+            Session name: {this.state.session?.session_name}
+          </Segment>
+          <Segment>
+            <Form
+              onSubmit={(event) => {
+                this.onEstimationFormSubmit(this.state.estimationForm);
+              }}
+            >
+              <Form.Field>
+                <input
+                  name="estimation_name"
+                  placeholder="Estimation Name"
+                  onChange={this.onEstimationFormInputChange}
+                  value={this.state.estimationForm?.estimation_name}
+                />
+              </Form.Field>
+              <Form.Field>
+                <input
+                  name="estimation_description"
+                  placeholder="Estimation Description"
+                  onChange={this.onEstimationFormInputChange}
+                  value={this.state.estimationForm?.estimation_description}
+                />
+              </Form.Field>
+              <Button floated="right" type="submit">
+                New
+              </Button>
+            </Form>
+          </Segment>
+        </Segment.Group>
+        <Segment.Group className="estimation-container">
+          <Segment>
+            {this.state.session?.estimations && (
+              <Estimations rev={this.state.session._rev} estimations={this.state.session?.estimations}></Estimations>
+            )}           
+          </Segment>
+        </Segment.Group>
 
-        <br />
+        <div>
+          <h1>PO WORKS!!! {this.sessionId}</h1>
 
-        {JSON.stringify(this.state.session)}
+          <br />
 
-        <Button type="submit" primary onClick={this.onButtonClick}>
-          Submit
-        </Button>
+          {JSON.stringify(this.state.session)}
+
+          <Button type="submit" primary onClick={this.onButtonClick}>
+            Submit
+          </Button>
+        </div>
       </div>
     );
   }

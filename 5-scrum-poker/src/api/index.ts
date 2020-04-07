@@ -1,5 +1,6 @@
 import PouchDB from "pouchdb";
-import {ISessionDb} from "./interfaces";
+import {ISessionDb, IEstimation} from "./interfaces";
+import {v4 as uuid} from "uuid";
 
 export class ApiService {
   private db: PouchDB.Database<ISessionDb>;
@@ -16,8 +17,8 @@ export class ApiService {
     return this.db.post(data);
   }
 
-  getSession(id: string) {
-    return this.db.get(id);
+  getSession(sessionId: string) {
+    return this.db.get(sessionId);
   }
 
   update(document: PouchDB.Core.PutDocument<ISessionDb>) {
@@ -29,6 +30,15 @@ export class ApiService {
     return this.getSession(sessionId).then((session) => {
       return this.db.remove({_id: sessionId, _rev: session._rev})
     })
+  }
+
+  createNewEstimation(document: PouchDB.Core.PutDocument<ISessionDb>, newEstimation: IEstimation){
+    const id = uuid();
+    const estimations = document.estimations ?? {};
+    estimations[id] = {...newEstimation, id}
+    document.estimations = estimations;
+
+    return this.db.put(document);
   }
 
   onChange(
