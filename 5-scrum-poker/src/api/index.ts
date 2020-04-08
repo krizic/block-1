@@ -73,6 +73,18 @@ export class ApiService {
     }
   }
 
+  deleteEstimation(
+    refDocument: PouchDB.Core.PutDocument<ISessionDb>,
+    estimationId: string
+  ) {
+    this.db.get(refDocument._id!).then((document) => {
+      if(document.estimations) {
+        delete document.estimations[estimationId];
+        this.db.put(document);
+      }
+    });
+  }
+
   onChange(
     callback: (change?: PouchDB.Core.ChangesResponseChange<ISessionDb>) => any
   ) {

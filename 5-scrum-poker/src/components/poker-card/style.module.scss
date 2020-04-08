@@ -40,6 +40,12 @@ $card_height: 3.5 * $card_size_multiplier;
 
 .faceFront {
   @extend .face;
+
+  height: $card_height - (2 * $card_spacing);
+  padding: 0;
+  margin: $card_spacing;
+  background: #e1e1e1;
+  border-radius: 0.25rem;
 }
 .content {
   display: flex;
@@ -51,22 +57,22 @@ $card_height: 3.5 * $card_size_multiplier;
 }
 
 .valueFront {
-    font-size: 4rem;
-    line-height: 4rem;
+  font-size: 4rem;
+  line-height: 4rem;
 }
 
-.avatar{
-    overflow: hidden;
-    border-radius: 99rem;
+.avatar {
+  overflow: hidden;
+  border-radius: 99rem;
+  border: 2px solid black;
 }
 
 .labelFront {
-    line-height: normal;
-    text-align: center;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1rem;
+  line-height: normal;
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1rem;
 }
-

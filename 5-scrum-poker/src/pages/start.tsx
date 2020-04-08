@@ -69,7 +69,7 @@ class Start extends React.Component<IStartProps, IStartState> {
             session_pin: formData.session_pin,
             created_at: newSession.created_at,
           });
-          this.props.history.push(`/po-page?id=${response.id}`);
+          this.props.history.push(`/po?id=${response.id}`);
         }
       });
     }

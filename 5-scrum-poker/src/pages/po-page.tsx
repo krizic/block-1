@@ -2,7 +2,7 @@ import * as React from "react";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 import {ISessionDb} from "../api/interfaces";
 import {ApiService} from "../api";
-import {Button, Segment, Form, Tab} from "semantic-ui-react";
+import {Button, Segment, Form} from "semantic-ui-react";
 
 import "./po-page.scss";
 import Estimations from '../components/estimations/estimations';
@@ -78,32 +78,11 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
     });
   };
 
-  panes = [
-    {menuItem: "Tab 1", render: () => <Tab.Pane>Tab 1 Content</Tab.Pane>},
-    {menuItem: "Tab 2", render: () => <Tab.Pane>Tab 2 Content</Tab.Pane>},
-    {menuItem: "Tab 3", render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>},
-  ];
-
-
-
-
-
-  // TabExampleVerticalTabularRight = () => {
-
-  //   const estimations = this.state.session?.estimations;
-
-  //   // const estimationPanes =  Object.keys(this.state.session?.estimations
-  //   return (<Tab
-  //     menu={fluid: true, vertical: true, tabular: "right"}
-  //     panes={this.state.session?.estimations}
-  //   />)
-  //   };
-
   public render() {
     return (
       <div id="po-page">
         <Segment.Group>
-          <Segment size="big">
+          <Segment size="big" secondary>
             Session name: {this.state.session?.session_name}
           </Segment>
           <Segment>
@@ -141,18 +120,6 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
             )}           
           </Segment>
         </Segment.Group>
-
-        <div>
-          <h1>PO WORKS!!! {this.sessionId}</h1>
-
-          <br />
-
-          {JSON.stringify(this.state.session)}
-
-          <Button type="submit" primary onClick={this.onButtonClick}>
-            Submit
-          </Button>
-        </div>
       </div>
     );
   }
