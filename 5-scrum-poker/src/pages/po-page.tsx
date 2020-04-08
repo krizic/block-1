@@ -5,7 +5,7 @@ import {ApiService} from "../api";
 import {Button, Segment, Form, Tab} from "semantic-ui-react";
 
 import "./po-page.scss";
-import Estimations from '../components/estimations';
+import Estimations from '../components/estimations/estimations';
 
 interface IEstimationForm {
   estimation_name: string;

@@ -28,29 +28,48 @@ export class ApiService {
 
   delete(sessionId: string) {
     return this.getSession(sessionId).then((session) => {
-      return this.db.remove({_id: sessionId, _rev: session._rev})
-    })
+      return this.db.remove({_id: sessionId, _rev: session._rev});
+    });
   }
 
-  createNewEstimation(document: PouchDB.Core.PutDocument<ISessionDb>, newEstimation: IEstimation){
+  createNewEstimation(
+    document: PouchDB.Core.PutDocument<ISessionDb>,
+    newEstimation: IEstimation
+  ) {
     const id = uuid();
     const estimations = document.estimations ?? {};
-    estimations[id] = {...newEstimation, id}
+    estimations[id] = {...newEstimation, id};
     document.estimations = estimations;
 
     return this.db.put(document);
   }
 
-  updateEstimation(refDocument: PouchDB.Core.PutDocument<ISessionDb>, estimation: IEstimation){
-    if(refDocument._id && refDocument._rev) {
+  updateEstimation(
+    refDocument: PouchDB.Core.PutDocument<ISessionDb>,
+    estimation: IEstimation
+  ) {
+    if (refDocument._id && refDocument._rev) {
       this.db.get(refDocument._id).then((document) => {
-        if(document.estimations) {
-          document.estimations[estimation.id!] = estimation;
+        if (document.estimations) {
+          //set all other to inactive
+          document.estimations = Object.keys(document.estimations).reduce(
+            (next, currentEstKey) => {
+              if (next[currentEstKey].id === estimation.id) {
+                next[currentEstKey] = estimation;
+              } else {
+                if (estimation.isActive) {
+                  next[currentEstKey].isActive = false;
+                }
+              }
+              return next;
+            },
+            document.estimations
+          );
         } else {
-          document.estimations = {[estimation.id!]: estimation}
+          document.estimations = {[estimation.id!]: estimation};
         }
         return this.db.put(document);
-      })
+      });
     }
   }
 

@@ -1,8 +1,8 @@
 import * as React from "react";
 import {Tab} from "semantic-ui-react";
 
-import {IEstimation} from "../api/interfaces";
-import VotesTable from "./votes-table";
+import {IEstimation} from "../../api/interfaces";
+import VotesTable from "../votes-table/votes-table";
 
 export interface IEstimationsProps {
   estimations: {[key: string]: IEstimation};

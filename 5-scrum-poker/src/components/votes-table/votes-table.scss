@@ -6,6 +6,7 @@
 
     // E
     &__controls {
+        z-index: 10;
         position: absolute;
         bottom: 0;
         right: 0;
@@ -15,4 +16,10 @@
 
         }
     }
+    &__cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;;
+    }
+
 }

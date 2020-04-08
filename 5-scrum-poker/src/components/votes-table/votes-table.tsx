@@ -2,8 +2,9 @@ import * as React from "react";
 import {Button} from "semantic-ui-react";
 
 import "./votes-table.scss";
-import {IEstimation} from "../api/interfaces";
-import {ApiService} from "../api";
+import {IEstimation} from "../../api/interfaces";
+import {ApiService} from "../../api";
+import CardReveal from '../card-reveal/card-reveal';
 
 export interface IVotesTableProps {
   estimate: IEstimation;
@@ -34,6 +35,17 @@ export default class VotesTable extends React.Component<
   public render() {
     return (
       <div className="votes-table">
+
+        <div className="votes-table__cards">
+          <CardReveal shouldHide={this.props.estimate.isActive} ></CardReveal> 
+          <CardReveal shouldHide={this.props.estimate.isActive} ></CardReveal> 
+          <CardReveal shouldHide={this.props.estimate.isActive} ></CardReveal> 
+          <CardReveal shouldHide={this.props.estimate.isActive} ></CardReveal> 
+          <CardReveal shouldHide={this.props.estimate.isActive} ></CardReveal> 
+          <CardReveal shouldHide={this.props.estimate.isActive} ></CardReveal> 
+          <CardReveal shouldHide={this.props.estimate.isActive} ></CardReveal> 
+        </div>
+
         <Button.Group vertical labeled icon className="votes-table__controls">
           <Button
             icon="play"
