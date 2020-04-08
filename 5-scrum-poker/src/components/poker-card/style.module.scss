@@ -19,12 +19,8 @@ $card_height: 3.5 * $card_size_multiplier;
 .componentBack {
   @extend .component;
 
-  background: rgb(0, 112, 255);
-  background: radial-gradient(
-    circle,
-    rgba(0, 112, 255, 1) 24%,
-    rgba(43, 170, 251, 1) 100%
-  );
+  background-image: url('/patterns/8126.png');
+
   border: none;
 }
 
@@ -75,4 +71,14 @@ $card_height: 3.5 * $card_size_multiplier;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1rem;
+}
+
+.voterLabel {
+  position: absolute;
+  text-align: center;
+  left: 0;
+  right: 0;
+  padding: .5rem 0;
+  background: #00000085;
+  color: white;
 }

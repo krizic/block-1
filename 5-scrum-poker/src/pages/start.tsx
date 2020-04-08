@@ -93,7 +93,7 @@ class Start extends React.Component<IStartProps, IStartState> {
   };
 
   onSessionLinkClick = (sessionId: string) => {
-    this.props.history.push(`/po-page?id=${sessionId}`);
+    this.props.history.push(`/po?id=${sessionId}`);
   };
 
   public render() {
