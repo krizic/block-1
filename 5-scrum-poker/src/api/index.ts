@@ -41,6 +41,19 @@ export class ApiService {
     return this.db.put(document);
   }
 
+  updateEstimation(refDocument: PouchDB.Core.PutDocument<ISessionDb>, estimation: IEstimation){
+    if(refDocument._id && refDocument._rev) {
+      this.db.get(refDocument._id).then((document) => {
+        if(document.estimations) {
+          document.estimations[estimation.id!] = estimation;
+        } else {
+          document.estimations = {[estimation.id!]: estimation}
+        }
+        return this.db.put(document);
+      })
+    }
+  }
+
   onChange(
     callback: (change?: PouchDB.Core.ChangesResponseChange<ISessionDb>) => any
   ) {

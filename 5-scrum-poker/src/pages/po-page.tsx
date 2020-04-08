@@ -63,6 +63,9 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
         name: form.estimation_name,
         description: form.estimation_description,
         timestamp: new Date().getTime(),
+        isActive: false,
+        isEnded: false,
+        votes: {}
       });
     }
   };
@@ -134,7 +137,7 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
         <Segment.Group className="estimation-container">
           <Segment>
             {this.state.session?.estimations && (
-              <Estimations rev={this.state.session._rev} estimations={this.state.session?.estimations}></Estimations>
+              <Estimations rev={this.state.session._rev} id={this.state.session._id} estimations={this.state.session?.estimations}></Estimations>
             )}           
           </Segment>
         </Segment.Group>

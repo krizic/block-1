@@ -11,5 +11,15 @@ export interface IEstimation{
     timestamp: number;
     name: string;
     description?: string;
-
+    isActive: boolean;
+    isEnded: boolean;
+    votes: {[key: string]:  IVote}
 }
+
+export interface IVote {
+    id: string;
+    voter_name: string;
+    value: number;
+    timestamp: number;
+}
+

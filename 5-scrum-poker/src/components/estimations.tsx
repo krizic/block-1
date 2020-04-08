@@ -1,10 +1,12 @@
 import * as React from "react";
 import {IEstimation} from "../api/interfaces";
 import {Tab} from "semantic-ui-react";
+import VotesTable from "./votes-table";
 
 export interface IEstimationsProps {
   estimations: {[key: string]: IEstimation};
   rev: string;
+  id: string;
 }
 
 export interface IEstimationsState {
@@ -20,37 +22,54 @@ export default class Estimations extends React.Component<
     super(props);
 
     this.state = {
-        initialRender: false
+      initialRender: false,
     };
   }
 
   componentDidMount() {
-   this.mapEstimationsToPanes();
-  }
-
-  componentWillUpdate(){
     this.mapEstimationsToPanes();
   }
 
-  shouldComponentUpdate(nextProps:IEstimationsProps, nextState:IEstimationsState ){
-    const shouldUpdate = (this.props.rev !== nextProps.rev) || !this.state.initialRender;
+  componentWillUpdate() {
+    this.mapEstimationsToPanes();
+  }
 
-    if(!this.state.initialRender) {
-        this.setState({initialRender: true});
+  shouldComponentUpdate(
+    nextProps: IEstimationsProps,
+    nextState: IEstimationsState
+  ) {
+    const shouldUpdate =
+      this.props.rev !== nextProps.rev ||
+      !this.state.initialRender ||
+      JSON.stringify(this.state) !== JSON.stringify(nextState);
+
+    if (!this.state.initialRender) {
+      this.setState({initialRender: true});
     }
 
     return shouldUpdate;
   }
 
-  mapEstimationsToPanes(){
+  mapEstimationsToPanes() {
     this.setState({
-        panes: Object.keys(this.props.estimations).map((estimationKeys) => {
+      panes: Object.keys(this.props.estimations)
+        .sort((a, b) => {
+          return this.props.estimations[a].timestamp <
+            this.props.estimations[b].timestamp
+            ? 1
+            : -1;
+        })
+        .map((estimationKeys, index) => {
           return {
-            menuItem: this.props.estimations[estimationKeys].name,
-            render: () => <Tab.Pane>Tab 1 Content</Tab.Pane>,
+            menuItem: this.props.estimations[estimationKeys].isActive ? `${this.props.estimations[estimationKeys].name} - Active` : this.props.estimations[estimationKeys].name,
+            render: () => (
+              <Tab.Pane red active={index === 0}>
+                <VotesTable documentRef={{_rev: this.props.rev, _id: this.props.id }} estimate={this.props.estimations[estimationKeys]} ></VotesTable>
+              </Tab.Pane>
+            ),
           };
         }),
-      });
+    });
   }
 
   public render() {
