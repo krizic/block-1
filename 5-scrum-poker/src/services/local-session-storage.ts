@@ -7,7 +7,12 @@ export interface ISessionAccess {
 
 const sessionKey = "sp_sessions";
 
-export class LocalApi {
+export class UserSessionApi {
+
+}
+
+
+export class LocalSessionApi {
   static saveSession(session: ISessionAccess) {
     let currentSessions = this.getSessions();
     localStorage.setItem(

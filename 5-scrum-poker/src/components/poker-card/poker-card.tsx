@@ -54,7 +54,7 @@ export default class PokerCard extends React.Component<
                 />
                 <div className={style.voterLabel}>Vedran</div>
               </div>
-              <Dimmer active>
+              {/* <Dimmer active>
                 <Gravatar
                   size={80}
                   className={style.avatar}
@@ -62,7 +62,7 @@ export default class PokerCard extends React.Component<
                 />
                 <div className={style.voterLabel}>Vedran</div>
                 <Loader active className="fit" />
-              </Dimmer>
+              </Dimmer> */}
             </div>
           </div>
         </div>

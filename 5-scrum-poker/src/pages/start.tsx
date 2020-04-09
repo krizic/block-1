@@ -12,7 +12,7 @@ import {withRouter, RouteComponentProps} from "react-router-dom";
 
 import {ApiService} from "../api";
 import "./start.scss";
-import {LocalApi, ISessionAccess} from "../services/local-storage";
+import {LocalSessionApi, ISessionAccess} from "../services/local-session-storage";
 import {timeFormat} from "../utils";
 
 export interface IStartProps extends RouteComponentProps {}
@@ -43,7 +43,7 @@ class Start extends React.Component<IStartProps, IStartState> {
       session_pin: "",
     },
 
-    previousSessions: LocalApi.getSessions(),
+    previousSessions: LocalSessionApi.getSessions(),
   };
 
   componentDidMount() {
@@ -63,7 +63,7 @@ class Start extends React.Component<IStartProps, IStartState> {
       const newSession = {...formData, ...{created_at: new Date().getTime()}};
       this.api.post(newSession).then((response) => {
         if (response.ok) {
-          LocalApi.saveSession({
+          LocalSessionApi.saveSession({
             _id: response.id,
             session_name: formData.session_name,
             session_pin: formData.session_pin,
@@ -87,8 +87,8 @@ class Start extends React.Component<IStartProps, IStartState> {
   onPreviousSessionDelete = (event: React.MouseEvent, sessionId: string) => {
     event.stopPropagation();
     this.api.delete(sessionId).finally(() => {
-      LocalApi.deleteSession(sessionId);
-      this.setState({previousSessions: LocalApi.getSessions()});
+      LocalSessionApi.deleteSession(sessionId);
+      this.setState({previousSessions: LocalSessionApi.getSessions()});
     });
   };
 

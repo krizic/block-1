@@ -18,7 +18,7 @@ function App() {
       {/* Sharable across the pages */}
       <div id="particles-js"></div>
       <Switch>
-        <Route path="/developer">
+        <Route path="/dev">
           <DeveloperPage/>
         </Route>
         <Route path="/po">
