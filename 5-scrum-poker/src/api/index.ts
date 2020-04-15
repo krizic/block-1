@@ -34,11 +34,11 @@ export class ApiService {
 
   createNewEstimation(
     document: PouchDB.Core.PutDocument<ISessionDb>,
-    newEstimation: IEstimation
+    newEstimation: Partial<IEstimation>
   ) {
     const id = uuid();
     const estimations = document.estimations ?? {};
-    estimations[id] = {...newEstimation, id};
+    estimations[id] = {...newEstimation, id} as any;
     document.estimations = estimations;
 
     return this.db.put(document);

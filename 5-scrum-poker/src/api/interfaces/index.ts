@@ -7,7 +7,7 @@ export interface ISessionDb {
 }
 
 export interface IEstimation{
-    id?: string;
+    id: string;
     timestamp: number;
     name: string;
     description?: string;

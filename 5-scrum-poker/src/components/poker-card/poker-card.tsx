@@ -3,7 +3,6 @@ import * as React from "react";
 import style from "./style.module.scss";
 import "./index.scss";
 import Gravatar from "react-gravatar";
-import {Loader, Dimmer} from "semantic-ui-react";
 
 export interface IPokerCardProps {
   voteValue: string;

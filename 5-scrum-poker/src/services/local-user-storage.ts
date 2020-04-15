@@ -8,15 +8,15 @@ export interface IUserInfo {
 const userInfoKey = "sp_user";
 
 export class LocalUserInfoApi {
-  static saveSession(userInfo: IUserInfo) {
+  static saveUserInfo(userInfo: IUserInfo) {
     localStorage.setItem(userInfoKey, JSON.stringify(userInfo));
   }
 
-  static getSession(): IUserInfo | null {
+  static getUserInfo(): IUserInfo | null {
     const userInfoValue = localStorage.getItem(userInfoKey);
 
     if (userInfoValue) {
-      return JSON.parse(userInfoKey);
+      return JSON.parse(userInfoValue);
     }
 
     return null;
