@@ -1,8 +1,10 @@
 import * as React from "react";
 import {Tab} from "semantic-ui-react";
 
-import {IEstimation} from "../api/interfaces";
-import VotesTable from "./votes-table";
+import {IEstimation} from "../../api/interfaces";
+import VotesTable from "../votes-table/votes-table";
+
+import "./style.scss";
 
 export interface IEstimationsProps {
   estimations: {[key: string]: IEstimation};
@@ -41,7 +43,7 @@ export default class Estimations extends React.Component<
             ? `${this.props.estimations[estimationKeys].name} - Active`
             : this.props.estimations[estimationKeys].name,
           render: () => (
-            <Tab.Pane red active={index === 0}>
+            <Tab.Pane className="tab-container">
               <VotesTable
                 documentRef={{_rev: this.props.rev, _id: this.props.id}}
                 estimate={this.props.estimations[estimationKeys]}
@@ -55,7 +57,7 @@ export default class Estimations extends React.Component<
   public render() {
     return (
       <Tab
-        menu={{fluid: true, vertical: true, tabular: "right"}}
+        menu={{ pointing: true, fluid: true, vertical: true }}
         panes={this.mapEstimationsToPanes()}
       />
     );

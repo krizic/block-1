@@ -21,7 +21,7 @@ function App() {
         <Route path="/developer">
           <DeveloperPage/>
         </Route>
-        <Route path="/po-page">
+        <Route path="/po">
           <PoPage/>
         </Route>
         <Route path="/">
