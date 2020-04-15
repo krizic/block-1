@@ -1,12 +1,15 @@
 import * as React from "react";
 import {ApiService} from "../../api";
+import {IEstimation} from "../../api/interfaces";
+import {Segment, Card} from "semantic-ui-react";
 
 export interface IDevEstimationProps {
   sessionId: string;
 }
 
 export interface IDevEstimationState {
-  activeEstimationId?: string;
+  activeEstimation?: IEstimation;
+  sessionName?: string;
 }
 
 export default class DevEstimation extends React.Component<
@@ -24,16 +27,15 @@ export default class DevEstimation extends React.Component<
 
   setActiveEstimation() {
     this.api.getSession(this.props.sessionId).then((result) => {
-      const activeEstimationId = Object.keys(result.estimations!).reduce(
-        (acc, current) => {
-          const currentEstimation = result.estimations![current];
-          acc = currentEstimation.isActive ? currentEstimation.id : acc;
-          return acc;
-        },
-        ""
-      );
+      const activeEstimation: IEstimation | undefined = Object.keys(
+        result.estimations!
+      ).reduce((acc, current) => {
+        const currentEstimation = result.estimations![current];
+        acc = currentEstimation.isActive ? currentEstimation : acc;
+        return acc;
+      }, undefined as IEstimation | undefined);
 
-      this.setState({activeEstimationId});
+      this.setState({activeEstimation, sessionName: result.session_name});
     });
   }
 
@@ -42,6 +44,37 @@ export default class DevEstimation extends React.Component<
   };
 
   public render() {
-    return <div>{this.state.activeEstimationId || "NO Estimation Active"}</div>;
+    return (
+      <>
+        <Segment.Group>
+          <Segment secondary>Session: {this.state.sessionName}</Segment>
+
+          {!this.state.activeEstimation && (
+            <Segment padded="very" textAlign="center">
+              No Active Estimation.
+            </Segment>
+          )}
+        </Segment.Group>
+        {this.state.activeEstimation && (
+          <Card.Group>
+            <Card>
+              <Card.Content>
+                <Card.Header>
+                  Estimation Name: {this.state.activeEstimation.name}
+                </Card.Header>
+                <Card.Description>
+                  Estimation Description{" "}
+                  {this.state.activeEstimation.description}
+                </Card.Description>
+                <Card.Meta>
+                  <div>rest</div>
+                </Card.Meta>
+                
+              </Card.Content>
+            </Card>
+          </Card.Group>
+        )}
+      </>
+    );
   }
 }
