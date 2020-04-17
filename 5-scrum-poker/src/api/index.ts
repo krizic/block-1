@@ -1,6 +1,7 @@
 import PouchDB from "pouchdb";
 import {ISessionDb, IEstimation} from "./interfaces";
 import {v4 as uuid} from "uuid";
+import { IUserInfo } from '../services';
 
 export class ApiService {
   private db: PouchDB.Database<ISessionDb>;
@@ -30,6 +31,26 @@ export class ApiService {
     return this.getSession(sessionId).then((session) => {
       return this.db.remove({_id: sessionId, _rev: session._rev});
     });
+  }
+
+  getEstimation(sessionId: string, estimationId: string) {
+    return this.db.get(sessionId).then((session) => {
+      return [session.estimations?.[estimationId], session];
+    });
+  }
+
+  vote(sessionId: string, estimationId: string, userInfo: IUserInfo, vote: string) {
+    this.getEstimation(sessionId, estimationId).then(([estimation, session]: [IEstimation, ISessionDb & PouchDB.Core.IdMeta & PouchDB.Core.GetMeta]) => {
+      estimation.votes[userInfo.id] = {
+        id: userInfo.id,
+        timestamp: (new Date()).getTime(),
+        value: vote,
+        voter_username: userInfo.username,
+        voter_email: userInfo.email
+      }
+
+      this.updateEstimation({_id: session._id, _rev: session._rev}, estimation)
+    })
   }
 
   createNewEstimation(
@@ -78,7 +99,7 @@ export class ApiService {
     estimationId: string
   ) {
     this.db.get(refDocument._id!).then((document) => {
-      if(document.estimations) {
+      if (document.estimations) {
         delete document.estimations[estimationId];
         this.db.put(document);
       }

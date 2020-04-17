@@ -18,8 +18,9 @@ export interface IEstimation{
 
 export interface IVote {
     id: string;
-    voter_name: string;
-    value: number;
+    voter_username: string;
+    voter_email: string;
+    value: string;
     timestamp: number;
 }
 

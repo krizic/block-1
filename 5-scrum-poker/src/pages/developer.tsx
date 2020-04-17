@@ -55,7 +55,7 @@ class DeveloperPage extends React.Component<
     const main =
       this.sessionId && this.state.sessionValid ? (
         this.state.userInfo ? (
-          <DevEstimation sessionId={this.sessionId}></DevEstimation>
+          <DevEstimation userInfo={this.state.userInfo} sessionId={this.sessionId}></DevEstimation>
         ) : (
           <DevSignIn onUserSign={this.onUserSignIn}></DevSignIn>
         )

@@ -1,11 +1,11 @@
 import * as React from "react";
 import Gravatar from "react-gravatar";
 
-import style from "./style.module.scss";
 import "./index.scss";
 import {Dimmer, Loader} from "semantic-ui-react";
 
 export interface IPokerCardProps {
+  className?: string;
   voteValue: string;
   voter: string;
   side: "front" | "back";
@@ -25,22 +25,24 @@ export default class PokerCard extends React.Component<
   }
 
   onSelect = () => {
-    this.props.onSelect(this.props.voteValue);
+    if(this.props.onSelect) {
+      this.props.onSelect(this.props.voteValue);
+    }
   }
 
   public render() {
     const side =
       this.props.side === "front" ? (
         // front
-        <div className={style.componentFront} onClick={this.onSelect}>
-          <div className={style.faceFront}>
-            <div className={style.content}>
-              <div className={style.valueFront}>{this.props.voteValue}</div>
+        <div className={`componentFront ${this.props.className}`} onClick={this.onSelect}>
+          <div className={"faceFront"}>
+            <div className={"content"}>
+              <div className={"valueFront"}>{this.props.voteValue}</div>
               {this.props.withProfilePic && (
-                <div className={style.labelFront}>
+                <div className={"labelFront"}>
                   <Gravatar
                     size={80}
-                    className={style.avatar}
+                    className={"avatar"}
                     email="vedran@krizic.net"
                   />
                   <div>Vedran</div>
@@ -51,28 +53,28 @@ export default class PokerCard extends React.Component<
         </div>
       ) : (
         // back
-        <div className={style.componentBack} onClick={this.onSelect}>
-          <div className={style.faceBack}>
-            <div className={style.content}>
+        <div className={`componentBack ${this.props.className}`} onClick={this.onSelect}>
+          <div className={"faceBack"}>
+            <div className={"content"}>
               {this.props.withProfilePic && (
-                <div className={style.labelFront}>
+                <div className={"labelFront"}>
                   <Gravatar
                     size={80}
-                    className={style.avatar}
+                    className={"avatar"}
                     email="vedran@krizic.net"
                   />
-                  <div className={style.voterLabel}>Vedran</div>
+                  <div className={"voterLabel"}>Vedran</div>
                 </div>
               )}
               <Dimmer active>
                 {this.props.withProfilePic && (
                   <Gravatar
                     size={80}
-                    className={style.avatar}
+                    className={"avatar"}
                     email="vedran@krizic.net"
                   />
                 )}
-                <div className={style.voterLabel}>Vedran</div>
+                <div className={"voterLabel"}>Vedran</div>
                 <Loader active className="fit" />
               </Dimmer>
             </div>
