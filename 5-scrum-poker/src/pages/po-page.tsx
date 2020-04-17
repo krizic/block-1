@@ -2,10 +2,11 @@ import * as React from "react";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 import {ISessionDb} from "../api/interfaces";
 import {ApiService} from "../api";
-import {Button, Segment, Form} from "semantic-ui-react";
+import {Button, Segment, Form, Icon} from "semantic-ui-react";
+import { toast, ToastContainer } from 'react-toastify';
 
 import "./po-page.scss";
-import Estimations from '../components/estimations/estimations';
+import Estimations from "../components/estimations/estimations";
 
 interface IEstimationForm {
   estimation_name: string;
@@ -65,25 +66,35 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
         timestamp: new Date().getTime(),
         isActive: false,
         isEnded: false,
-        votes: {}
+        votes: {},
       });
     }
   };
 
-  // tbd
-  onButtonClick = () => {
-    this.api.update({
-      _id: this.state.session?._id,
-      _rev: this.state.session?._rev,
-    });
+  onCopyButtonClick = () => {
+    const devSessionUrl = `${window.location.origin}/dev?id=${this.sessionId}`;
+    navigator.clipboard.writeText(devSessionUrl);
+    toast.success("Dev url Copied!", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    })
   };
 
   public render() {
     return (
       <div id="po-page">
         <Segment.Group>
-          <Segment size="big" secondary>
+          <Segment secondary clearing className="session-header">
             Session name: {this.state.session?.session_name}
+            <Button
+              onClick={this.onCopyButtonClick}
+              color="blue"
+              size="mini"
+              floated="right"
+              inverted
+            >
+              <Icon name="share alternate" />
+              Copy Invitation Link
+            </Button>
           </Segment>
           <Segment>
             <Form
@@ -116,10 +127,15 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
         <Segment.Group className="estimation-container">
           <Segment>
             {this.state.session?.estimations && (
-              <Estimations rev={this.state.session._rev} id={this.state.session._id} estimations={this.state.session?.estimations}></Estimations>
-            )}           
+              <Estimations
+                rev={this.state.session._rev}
+                id={this.state.session._id}
+                estimations={this.state.session?.estimations}
+              ></Estimations>
+            )}
           </Segment>
         </Segment.Group>
+        <ToastContainer autoClose={3000} />
       </div>
     );
   }

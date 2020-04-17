@@ -1,37 +1,77 @@
 import * as React from "react";
+import {withRouter, RouteComponentProps} from "react-router-dom";
 import "./developer.scss";
 import {IUserInfo, LocalUserInfoApi} from "../services";
 import DevSignIn from "../components/dev-sign-in/dev-sign-in";
-import DevEstimation from '../components/dev-estimation/dev-estimation';
+import DevEstimation from "../components/dev-estimation/dev-estimation";
+import {Segment, Loader} from "semantic-ui-react";
+import {ApiService} from "../api";
 
-export interface IDeveloperPageProps {}
+export interface IDeveloperPageProps extends RouteComponentProps {}
 
 export interface IDeveloperPageState {
   userInfo?: IUserInfo;
+  sessionValid?: boolean;
+  initialLoad?: boolean;
 }
 
-export default class DeveloperPage extends React.Component<
+class DeveloperPage extends React.Component<
   IDeveloperPageProps,
   IDeveloperPageState
 > {
+  sessionId: string;
 
-  currentSession: string = "115f133d-2f68-4ef1-8966-1faff762f5f2";
+  readonly api: ApiService = ApiService.Instance;
 
-  state: IDeveloperPageState = {userInfo: LocalUserInfoApi.getUserInfo() || undefined};
+  constructor(props: IDeveloperPageProps) {
+    super(props);
+
+    const params = new URLSearchParams(this.props.location.search);
+    this.sessionId = params.get("id");
+    this.state = {userInfo: LocalUserInfoApi.getUserInfo() || undefined};
+  }
+
+  componentDidMount() {
+    if (this.sessionId) {
+      this.api
+        .getSession(this.sessionId)
+        .then((response) => {
+          this.setState({sessionValid: true});
+        })
+        .catch((error) => {
+          this.setState({sessionValid: false});
+        })
+        .finally(() => {
+          this.setState({initialLoad: true});
+        });
+    }
+  }
 
   onUserSignIn = (userInfo: IUserInfo) => {
     this.setState({userInfo});
   };
 
   public render() {
-    return (
-      <div className="developer-page">
-        {this.state.userInfo ? (
-          <DevEstimation  sessionId= {this.currentSession} ></DevEstimation>
+    const main =
+      this.sessionId && this.state.sessionValid ? (
+        this.state.userInfo ? (
+          <DevEstimation sessionId={this.sessionId}></DevEstimation>
         ) : (
           <DevSignIn onUserSign={this.onUserSignIn}></DevSignIn>
+        )
+      ) : (
+        <Segment>No session Id</Segment>
+      );
+
+    return (
+      <div className="developer-page">
+        {this.state.initialLoad && main}
+        {!this.state.initialLoad && (
+          <Loader inverted active size="huge" content="Loading" />
         )}
       </div>
     );
   }
 }
+
+export default withRouter(DeveloperPage);
