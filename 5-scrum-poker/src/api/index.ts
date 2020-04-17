@@ -1,7 +1,7 @@
 import PouchDB from "pouchdb";
 import {ISessionDb, IEstimation} from "./interfaces";
 import {v4 as uuid} from "uuid";
-import { IUserInfo } from '../services';
+import {IUserInfo} from "../services";
 
 export class ApiService {
   private db: PouchDB.Database<ISessionDb>;
@@ -39,18 +39,33 @@ export class ApiService {
     });
   }
 
-  vote(sessionId: string, estimationId: string, userInfo: IUserInfo, vote: string) {
-    this.getEstimation(sessionId, estimationId).then(([estimation, session]: [IEstimation, ISessionDb & PouchDB.Core.IdMeta & PouchDB.Core.GetMeta]) => {
-      estimation.votes[userInfo.id] = {
-        id: userInfo.id,
-        timestamp: (new Date()).getTime(),
-        value: vote,
-        voter_username: userInfo.username,
-        voter_email: userInfo.email
+  vote(
+    sessionId: string,
+    estimationId: string,
+    userInfo: IUserInfo,
+    vote?: string
+  ) {
+    this.getEstimation(sessionId, estimationId).then(
+      ([estimation, session]: [
+        IEstimation,
+        ISessionDb & PouchDB.Core.IdMeta & PouchDB.Core.GetMeta
+      ]) => {
+        debugger;
+        if ((!vote && !estimation.votes[userInfo.id]) || vote) {
+          estimation.votes[userInfo.id] = {
+            id: userInfo.id,
+            timestamp: new Date().getTime(),
+            value: vote,
+            voter_username: userInfo.username,
+            voter_email: userInfo.email,
+          };
+          this.updateEstimation(
+            {_id: session._id, _rev: session._rev},
+            estimation
+          );
+        }
       }
-
-      this.updateEstimation({_id: session._id, _rev: session._rev}, estimation)
-    })
+    );
   }
 
   createNewEstimation(

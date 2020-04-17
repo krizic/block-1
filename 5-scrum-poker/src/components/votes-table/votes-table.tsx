@@ -31,7 +31,7 @@ export default class VotesTable extends React.Component<
 
   onDeleteClick = (e: React.MouseEvent) => {
     this.api.deleteEstimation(this.props.documentRef, this.props.estimate.id!);
-  }
+  };
 
   public render() {
     return (
@@ -69,27 +69,14 @@ export default class VotesTable extends React.Component<
 
           <Segment>
             <div className="votes-table__cards">
-              <CardReveal
-                shouldHide={this.props.estimate.isActive}
-              ></CardReveal>
-              <CardReveal
-                shouldHide={this.props.estimate.isActive}
-              ></CardReveal>
-              <CardReveal
-                shouldHide={this.props.estimate.isActive}
-              ></CardReveal>
-              <CardReveal
-                shouldHide={this.props.estimate.isActive}
-              ></CardReveal>
-              <CardReveal
-                shouldHide={this.props.estimate.isActive}
-              ></CardReveal>
-              <CardReveal
-                shouldHide={this.props.estimate.isActive}
-              ></CardReveal>
-              <CardReveal
-                shouldHide={this.props.estimate.isActive}
-              ></CardReveal>
+              {Object.keys(this.props.estimate.votes).map((voteKey) => {
+                return (
+                  <CardReveal
+                    vote={this.props.estimate.votes[voteKey]}
+                    shouldHide={this.props.estimate.isActive}
+                  ></CardReveal>
+                );
+              })}
             </div>
           </Segment>
         </SegmentGroup>

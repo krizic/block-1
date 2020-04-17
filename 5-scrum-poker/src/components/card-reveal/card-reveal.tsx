@@ -3,10 +3,12 @@ import {Reveal} from "semantic-ui-react";
 import PokerCard from "../poker-card/poker-card";
 
 import style from "./style.module.scss";
+import { IVote } from '../../api/interfaces';
 
 export interface ICardRevealProps {
   shouldHide: boolean;
   withProfilePic?: boolean;
+  vote: IVote;
 }
 
 export default class CardReveal extends React.Component<ICardRevealProps> {
@@ -23,16 +25,18 @@ export default class CardReveal extends React.Component<ICardRevealProps> {
           <PokerCard
             withProfilePic
             side="back"
-            voter=""
-            voteValue=""
+            loading={!this.props.vote?.value}
+            voterEmail={this.props.vote.voter_email}
+            voterUsername={this.props.vote.voter_username}
           ></PokerCard>
         </Reveal.Content>
         <Reveal.Content style={{lineHeight: 0}} hidden>
           <PokerCard
             withProfilePic
             side="front"
-            voter="Vedran"
-            voteValue="40"
+            voterEmail={this.props.vote.voter_email}
+            voterUsername={this.props.vote.voter_username}
+            voteValue={this.props.vote.value}
           ></PokerCard>
         </Reveal.Content>
       </Reveal>

@@ -6,9 +6,11 @@ import {Dimmer, Loader} from "semantic-ui-react";
 
 export interface IPokerCardProps {
   className?: string;
-  voteValue: string;
-  voter: string;
+  voteValue?: string;
+  voterUsername?: string;
+  voterEmail?: string;
   side: "front" | "back";
+  loading?: boolean
   withProfilePic?: boolean;
   onSelect?: (value: string) => any
 }
@@ -43,9 +45,9 @@ export default class PokerCard extends React.Component<
                   <Gravatar
                     size={80}
                     className={"avatar"}
-                    email="vedran@krizic.net"
+                    email={this.props.voterEmail}
                   />
-                  <div>Vedran</div>
+                  <div>{this.props.voterUsername}</div>
                 </div>
               )}
             </div>
@@ -61,20 +63,19 @@ export default class PokerCard extends React.Component<
                   <Gravatar
                     size={80}
                     className={"avatar"}
-                    email="vedran@krizic.net"
+                    email={this.props.voterEmail}
                   />
-                  <div className={"voterLabel"}>Vedran</div>
+                  <div className={"voterLabel"}>{this.props.children}</div>
                 </div>
               )}
-              <Dimmer active>
+              <Dimmer active={this.props.loading}>
                 {this.props.withProfilePic && (
                   <Gravatar
                     size={80}
                     className={"avatar"}
-                    email="vedran@krizic.net"
+                    email={this.props.voterEmail}
                   />
                 )}
-                <div className={"voterLabel"}>Vedran</div>
                 <Loader active className="fit" />
               </Dimmer>
             </div>

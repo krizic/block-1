@@ -43,7 +43,7 @@ export default class DevEstimation extends React.Component<
   }
 
   setActiveEstimation() {
-    this.api.getSession(this.props.sessionId).then((result) => {
+    return this.api.getSession(this.props.sessionId).then((result) => {
       const activeEstimation: IEstimation | undefined = Object.keys(
         result.estimations!
       ).reduce((acc, current) => {
@@ -64,7 +64,15 @@ export default class DevEstimation extends React.Component<
   }
 
   onActiveEstimationChange = () => {
-    this.setActiveEstimation();
+    this.setActiveEstimation().then(() => {
+      if (this.state.activeEstimation) {
+        this.api.vote(
+          this.props.sessionId,
+          this.state.activeEstimation.id,
+          this.props.userInfo
+        );
+      }
+    });
   };
 
   onCardSelected = (value: string) => {
@@ -111,7 +119,7 @@ export default class DevEstimation extends React.Component<
                       }`}
                       side="front"
                       voteValue={value}
-                      voter={this.props.userInfo.username}
+                      voterUsername={this.props.userInfo.username}
                     ></PokerCard>
                   );
                 })}
