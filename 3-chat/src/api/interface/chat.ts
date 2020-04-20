@@ -1,6 +1,7 @@
 
 export interface IDoc {
-    _rev: string;
+    _rev?: string;
+    _id?: string;
 }
 
 export interface IFindResponse<T> {
@@ -15,7 +16,6 @@ export interface IChat extends IDoc {
     msg: string;
     sender: string;
     timestamp: number;
-    _id: string;
 }
 
 
