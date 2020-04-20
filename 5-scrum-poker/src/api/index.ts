@@ -4,10 +4,12 @@ import {v4 as uuid} from "uuid";
 import {IUserInfo} from "../services";
 
 export class ApiService {
+  readonly db_name = "sessions";
   private db: PouchDB.Database<ISessionDb>;
 
   private constructor() {
-    this.db = new PouchDB("http://localhost:5984/session1", {});
+    this.db = new PouchDB(`${process.env.REACT_APP_API}${this.db_name}`, {});
+    console.log("API SERVICE", process.env.REACT_APP_API);
   }
 
   info() {
@@ -50,7 +52,6 @@ export class ApiService {
         IEstimation,
         ISessionDb & PouchDB.Core.IdMeta & PouchDB.Core.GetMeta
       ]) => {
-        debugger;
         if ((!vote && !estimation.votes[userInfo.id]) || vote) {
           estimation.votes[userInfo.id] = {
             id: userInfo.id,

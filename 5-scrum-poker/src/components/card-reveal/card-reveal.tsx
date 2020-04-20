@@ -20,6 +20,7 @@ export default class CardReveal extends React.Component<ICardRevealProps> {
         animated="move"
         style={{pointerEvents: "none"}}
         className={style.container}
+        instant={this.props.shouldHide}
       >
         <Reveal.Content style={{lineHeight: 0}} visible>
           <PokerCard
@@ -39,7 +40,7 @@ export default class CardReveal extends React.Component<ICardRevealProps> {
             side="front"
             voterEmail={this.props.vote.voter_email}
             voterUsername={this.props.vote.voter_username}
-            voteValue={this.props.vote.value}
+            voteValue={this.props.shouldHide ? "?" : this.props.vote.value}
           ></PokerCard>
         </Reveal.Content>
       </Reveal>

@@ -14,8 +14,10 @@ particlesJS.load('particles-js', "particlesjs-config.json", () => {
 
 function App() {
 
+  const baseName = process.env.NODE_ENV === "production" ? "/block-1/" : "/";
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={baseName}>
       {/* Sharable across the pages */}
       <div id="particles-js"></div>
       <Switch>
