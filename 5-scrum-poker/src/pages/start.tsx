@@ -100,7 +100,7 @@ class Start extends React.Component<IStartProps, IStartState> {
     return (
       <div id="start-page">
         <Segment raised>
-          <Grid columns={2} stackable>
+          <Grid columns= {2} stackable>
             <Grid.Column verticalAlign="middle">
               <Header textAlign="center">New Session</Header>
               <Form
