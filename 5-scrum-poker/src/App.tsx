@@ -14,7 +14,7 @@ particlesJS.load('particles-js', "particlesjs-config.json", () => {
 
 function App() {
 
-  const baseName = process.env.NODE_ENV === "production" ? "/block-1/" : "/";
+  const baseName = process.env.REACT_APP_BASE;
 
   return (
     <BrowserRouter basename={baseName}>
