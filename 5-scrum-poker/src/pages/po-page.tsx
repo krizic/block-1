@@ -3,10 +3,11 @@ import {withRouter, RouteComponentProps} from "react-router-dom";
 import {ISessionDb} from "../api/interfaces";
 import {ApiService} from "../api";
 import {Button, Segment, Form, Icon} from "semantic-ui-react";
-import { toast, ToastContainer } from 'react-toastify';
+import {toast, ToastContainer} from "react-toastify";
 
 import "./po-page.scss";
 import Estimations from "../components/estimations/estimations";
+import {constants} from "os";
 
 interface IEstimationForm {
   estimation_name: string;
@@ -75,11 +76,24 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
     const devSessionUrl = `${window.location.origin}/dev?id=${this.sessionId}`;
     navigator.clipboard.writeText(devSessionUrl);
     toast.success("Dev url Copied!", {
-      position: toast.POSITION.BOTTOM_RIGHT
-    })
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
   };
 
   public render() {
+    const hasEstimations: boolean =
+      this.state.session?.estimations &&
+      !!Object.keys(this.state.session?.estimations).length;
+    const estimationsComponent = hasEstimations ? (
+      <Estimations
+        rev={this.state.session._rev}
+        id={this.state.session._id}
+        estimations={this.state.session?.estimations}
+      ></Estimations>
+    ) : (
+      <h4> No Estimations</h4>
+    );
+
     return (
       <div id="po-page">
         <Segment.Group>
@@ -125,15 +139,7 @@ class PoPage extends React.Component<IPoPageProps, IPoPageState> {
           </Segment>
         </Segment.Group>
         <Segment.Group className="estimation-container">
-          <Segment>
-            {this.state.session?.estimations && (
-              <Estimations
-                rev={this.state.session._rev}
-                id={this.state.session._id}
-                estimations={this.state.session?.estimations}
-              ></Estimations>
-            )}
-          </Segment>
+          <Segment textAlign="center">{estimationsComponent}</Segment>
         </Segment.Group>
         <ToastContainer autoClose={3000} />
       </div>

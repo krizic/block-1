@@ -10,33 +10,39 @@ export interface IPokerCardProps {
   voterUsername?: string;
   voterEmail?: string;
   side: "front" | "back";
-  loading?: boolean
+  loading?: boolean;
   withProfilePic?: boolean;
-  onSelect?: (value: string) => any
+  voterPattern?: string;
+  onSelect?: (value: string) => any;
 }
 
 export interface IPokerCardState {}
 
-export default class PokerCard extends React.Component<
+class PokerCard extends React.Component<
   IPokerCardProps,
   IPokerCardState
 > {
+  static defaultProps: { voterPattern: string; };
+
   constructor(props: IPokerCardProps) {
     super(props);
     this.state = {};
   }
 
   onSelect = () => {
-    if(this.props.onSelect) {
+    if (this.props.onSelect) {
       this.props.onSelect(this.props.voteValue);
     }
-  }
+  };
 
   public render() {
     const side =
       this.props.side === "front" ? (
         // front
-        <div className={`componentFront ${this.props.className}`} onClick={this.onSelect}>
+        <div
+          className={`componentFront ${this.props.className}`}
+          onClick={this.onSelect}
+        >
           <div className={"faceFront"}>
             <div className={"content"}>
               <div className={"valueFront"}>{this.props.voteValue}</div>
@@ -55,7 +61,11 @@ export default class PokerCard extends React.Component<
         </div>
       ) : (
         // back
-        <div className={`componentBack ${this.props.className}`} onClick={this.onSelect}>
+        <div
+          className={`componentBack ${this.props.className}`}
+          onClick={this.onSelect}
+          style={{backgroundImage: `url('/patterns/${this.props.voterPattern}.png')`}}
+        >
           <div className={"faceBack"}>
             <div className={"content"}>
               {this.props.withProfilePic && (
@@ -76,6 +86,7 @@ export default class PokerCard extends React.Component<
                     email={this.props.voterEmail}
                   />
                 )}
+                <div className={"voterLabel"}>{this.props.children}</div>
                 <Loader active className="fit" />
               </Dimmer>
             </div>
@@ -86,3 +97,10 @@ export default class PokerCard extends React.Component<
     return side;
   }
 }
+
+
+PokerCard.defaultProps = {
+  voterPattern: "8126"
+}
+
+export default PokerCard;

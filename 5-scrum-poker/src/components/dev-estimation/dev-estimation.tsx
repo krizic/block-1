@@ -1,7 +1,7 @@
 import * as React from "react";
 import {ApiService} from "../../api";
 import {IEstimation} from "../../api/interfaces";
-import {Segment, Card} from "semantic-ui-react";
+import {Segment} from "semantic-ui-react";
 import {IUserInfo} from "../../services";
 import PokerCard from "../poker-card/poker-card";
 import "./dev-estimation.scss";

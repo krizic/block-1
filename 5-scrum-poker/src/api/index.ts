@@ -56,6 +56,7 @@ export class ApiService {
             id: userInfo.id,
             timestamp: new Date().getTime(),
             value: vote,
+            pattern: userInfo.pattern,
             voter_username: userInfo.username,
             voter_email: userInfo.email,
           };

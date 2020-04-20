@@ -19,7 +19,7 @@ $card_height: 3.5 * $card_size_multiplier;
 .componentBack {
   @extend .component;
 
-  background-image: url('/patterns/8126.png');
+  // background-image: url('/patterns/8126.png');
 
   border: none;
 }
