@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "name": "Pages"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Content": {
+      "type": "richtext"
+    },
+    "PublishDate": {
+      "type": "datetime"
+    },
+    "isPublic": {
+      "type": "boolean"
+    },
+    "Tiles": {
+      "type": "dynamiczone",
+      "components": []
+    }
+  }
+}
