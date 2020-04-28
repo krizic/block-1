@@ -517,25 +517,20 @@
       "Pages": {
         "required": [
           "id",
-          "Title"
+          "title",
+          "path"
         ],
         "properties": {
           "id": {
             "type": "string"
           },
-          "Title": {
+          "title": {
             "type": "string"
           },
-          "Content": {
+          "content": {
             "type": "string"
           },
-          "PublishDate": {
-            "type": "datetime"
-          },
-          "isPublic": {
-            "type": "boolean"
-          },
-          "Tiles": {
+          "components": {
             "type": "array",
             "items": {
               "oneOf": [
@@ -622,27 +617,59 @@
                 }
               ]
             }
+          },
+          "page": {
+            "required": [
+              "id",
+              "title",
+              "path"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              },
+              "components": {
+                "type": "dynamiczone"
+              },
+              "page": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "isPublic": {
+                "type": "boolean"
+              }
+            }
+          },
+          "path": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
       "NewPages": {
         "required": [
-          "Title"
+          "title",
+          "path"
         ],
         "properties": {
-          "Title": {
+          "title": {
             "type": "string"
           },
-          "Content": {
+          "content": {
             "type": "string"
           },
-          "PublishDate": {
-            "type": "datetime"
-          },
-          "isPublic": {
-            "type": "boolean"
-          },
-          "Tiles": {
+          "components": {
             "type": "array",
             "items": {
               "oneOf": [
@@ -729,6 +756,16 @@
                 }
               ]
             }
+          },
+          "page": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean",
+            "default": false
           }
         }
       }

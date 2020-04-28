@@ -9,24 +9,30 @@
     "timestamps": true
   },
   "attributes": {
-    "Title": {
+    "title": {
       "type": "string",
       "required": true
     },
-    "Content": {
+    "content": {
       "type": "richtext"
     },
-    "PublishDate": {
-      "type": "datetime"
-    },
-    "isPublic": {
-      "type": "boolean"
-    },
-    "Tiles": {
+    "components": {
       "type": "dynamiczone",
       "components": [
         "tiles.header"
       ]
+    },
+    "page": {
+      "model": "pages"
+    },
+    "path": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "isPublic": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
