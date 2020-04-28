@@ -24,7 +24,9 @@
     },
     "Tiles": {
       "type": "dynamiczone",
-      "components": []
+      "components": [
+        "tiles.header"
+      ]
     }
   }
 }
