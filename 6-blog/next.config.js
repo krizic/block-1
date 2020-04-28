@@ -1,4 +1,8 @@
-// const withSass = require('@zeit/next-sass')
-// module.exports = withSass({
-//   /* config options here */
-// })
+const webpack = require('webpack')
+
+module.exports = {
+  webpack(config) {
+    config.devtool = 'eval-source-map';
+    return config
+  }
+}

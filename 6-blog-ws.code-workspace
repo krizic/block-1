@@ -7,5 +7,7 @@
 			"path": "6b-blog"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"debug.node.autoAttach": "on"
+	}
 }
