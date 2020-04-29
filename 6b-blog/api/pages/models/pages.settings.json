@@ -19,7 +19,8 @@
     "components": {
       "type": "dynamiczone",
       "components": [
-        "tiles.header"
+        "tiles.header",
+        "tiles.footer"
       ]
     },
     "page": {

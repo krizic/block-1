@@ -1,6 +1,6 @@
 import * as React from "react";
 import fetch from "isomorphic-fetch";
-import {UsersResponse} from "../src/api/interface";
+import {UsersResponse} from "../src/api/interface/user";
 import {Segment} from "semantic-ui-react";
 
 export interface IBlogProps {

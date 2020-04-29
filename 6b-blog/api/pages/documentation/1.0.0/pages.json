@@ -539,7 +539,8 @@
                     "__component": {
                       "type": "string",
                       "enum": [
-                        "tiles.header"
+                        "tiles.header",
+                        "tiles.footer"
                       ]
                     },
                     "id": {
@@ -614,6 +615,34 @@
                     "id",
                     "background"
                   ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.header",
+                        "tiles.footer"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "integer",
+                      "default": 12
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text"
+                  ]
                 }
               ]
             }
@@ -678,7 +707,8 @@
                     "__component": {
                       "type": "string",
                       "enum": [
-                        "tiles.header"
+                        "tiles.header",
+                        "tiles.footer"
                       ]
                     },
                     "id": {
@@ -752,6 +782,34 @@
                   "required": [
                     "id",
                     "background"
+                  ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.header",
+                        "tiles.footer"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "integer",
+                      "default": 12
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text"
                   ]
                 }
               ]

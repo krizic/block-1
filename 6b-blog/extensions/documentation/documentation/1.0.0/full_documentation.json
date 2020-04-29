@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "04/28/2020 11:37:26 PM"
+    "x-generation-date": "04/29/2020 4:11:29 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -2739,7 +2739,8 @@
                     "__component": {
                       "type": "string",
                       "enum": [
-                        "tiles.header"
+                        "tiles.header",
+                        "tiles.footer"
                       ]
                     },
                     "id": {
@@ -2814,6 +2815,34 @@
                     "id",
                     "background"
                   ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.header",
+                        "tiles.footer"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "integer",
+                      "default": 12
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text"
+                  ]
                 }
               ]
             }
@@ -2878,7 +2907,8 @@
                     "__component": {
                       "type": "string",
                       "enum": [
-                        "tiles.header"
+                        "tiles.header",
+                        "tiles.footer"
                       ]
                     },
                     "id": {
@@ -2952,6 +2982,34 @@
                   "required": [
                     "id",
                     "background"
+                  ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.header",
+                        "tiles.footer"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "integer",
+                      "default": 12
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text"
                   ]
                 }
               ]
