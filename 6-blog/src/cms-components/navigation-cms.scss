@@ -1,0 +1,13 @@
+.navigation-cms {
+    display: flex;
+    background-color: lightgray;
+
+    .icon-item {  
+        a {
+            color: #444;
+        }  
+        
+        font-size: 2rem;
+        padding-left: 20px;
+    }
+}

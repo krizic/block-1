@@ -1,0 +1,14 @@
+.teasers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .card {
+        height: 12rem;
+        display: flex;
+        background-position: center;
+        background-size: cover;
+        justify-content: center;
+        align-items: center;
+    }
+}

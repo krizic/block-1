@@ -790,7 +790,13 @@
                             "type": "string"
                           },
                           "icon": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "faFacebookSquare",
+                              "faTwitterSquare",
+                              "faInstagramSquare",
+                              "faPinterestSquare"
+                            ]
                           }
                         }
                       }
@@ -834,7 +840,13 @@
                             "type": "string"
                           },
                           "icon": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "faFacebookSquare",
+                              "faTwitterSquare",
+                              "faInstagramSquare",
+                              "faPinterestSquare"
+                            ]
                           }
                         }
                       }
@@ -1158,7 +1170,13 @@
                             "type": "string"
                           },
                           "icon": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "faFacebookSquare",
+                              "faTwitterSquare",
+                              "faInstagramSquare",
+                              "faPinterestSquare"
+                            ]
                           }
                         }
                       }
@@ -1202,7 +1220,13 @@
                             "type": "string"
                           },
                           "icon": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "faFacebookSquare",
+                              "faTwitterSquare",
+                              "faInstagramSquare",
+                              "faPinterestSquare"
+                            ]
                           }
                         }
                       }

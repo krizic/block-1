@@ -11,7 +11,13 @@
       "required": true
     },
     "icon": {
-      "type": "string"
+      "type": "enumeration",
+      "enum": [
+        "faFacebookSquare",
+        "faTwitterSquare",
+        "faInstagramSquare",
+        "faPinterestSquare"
+      ]
     }
   }
 }
