@@ -19,8 +19,10 @@
     "components": {
       "type": "dynamiczone",
       "components": [
+        "tiles.footer",
+        "tiles.cards-component",
         "tiles.header",
-        "tiles.footer"
+        "tiles.navigation"
       ]
     },
     "page": {

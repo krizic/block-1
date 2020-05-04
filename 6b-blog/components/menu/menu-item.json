@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_menu_menu_items",
+  "info": {
+    "name": "MenuItem",
+    "icon": "sitemap"
+  },
+  "options": {},
+  "attributes": {
+    "page": {
+      "model": "pages"
+    }
+  }
+}

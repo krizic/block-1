@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@types/isomorphic-fetch": "0.0.35",
     "@zeit/next-sass": "^1.0.1",
     "cross-env": "^7.0.2",

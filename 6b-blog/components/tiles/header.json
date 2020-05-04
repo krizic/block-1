@@ -19,6 +19,11 @@
     },
     "title": {
       "type": "string"
+    },
+    "links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tiles.header-link-item"
     }
   }
 }

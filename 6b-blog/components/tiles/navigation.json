@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_tiles_navigations",
+  "info": {
+    "name": "Navigation",
+    "icon": "align-justify"
+  },
+  "options": {},
+  "attributes": {
+    "isDarkMode": {
+      "type": "boolean"
+    },
+    "links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tiles.header-link-item"
+    }
+  }
+}

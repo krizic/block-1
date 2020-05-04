@@ -1,12 +1,14 @@
 import * as React from "react";
 
 import {PageService} from "../src/api/page-service";
-import {IPage, ComponentBase} from "../src/api/interface/page";
+import {IPage} from "../src/api/interface/page";
 import HeaderCMS from "../src/cms-components/header-cms";
 import {ComponentType} from "../src/modules/components-enum";
 import {IHeaderComponent} from "../src/api/interface/header-component";
 import {IFooterComponent} from "../src/api/interface/footer-component";
 import FooterCMS from "../src/cms-components/footer-cms";
+import { ICardsComponent } from "../src/api/interface/cards-component";
+import CardsCMS from "../src/cms-components/cards-cms";
 
 export interface IHomeProps {
   page: IPage;
@@ -43,6 +45,16 @@ export default class Home extends React.PureComponent<IHomeProps> {
               title={componentHeader.title}
             ></HeaderCMS>
           );
+          break;
+
+          case ComponentType.cards:
+            const componentCards: ICardsComponent = current as ICardsComponent;
+            acc.push(
+                <CardsCMS  description={componentCards.description}
+                items= {componentCards.items}
+                ></CardsCMS>
+            );
+
           break;
 
         default:

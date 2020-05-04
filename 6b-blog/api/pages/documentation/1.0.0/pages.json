@@ -539,8 +539,172 @@
                     "__component": {
                       "type": "string",
                       "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
                         "tiles.header",
-                        "tiles.footer"
+                        "tiles.navigation"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "integer",
+                      "default": 12
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text"
+                  ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
+                        "tiles.header",
+                        "tiles.navigation"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "alt"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "alt": {
+                            "type": "string"
+                          },
+                          "image": {
+                            "required": [
+                              "id",
+                              "name",
+                              "hash",
+                              "mime",
+                              "size",
+                              "url",
+                              "provider"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "alternativeText": {
+                                "type": "string"
+                              },
+                              "caption": {
+                                "type": "string"
+                              },
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              },
+                              "formats": {
+                                "type": "object"
+                              },
+                              "hash": {
+                                "type": "string"
+                              },
+                              "ext": {
+                                "type": "string"
+                              },
+                              "mime": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "number"
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "previewUrl": {
+                                "type": "string"
+                              },
+                              "provider": {
+                                "type": "string"
+                              },
+                              "provider_metadata": {
+                                "type": "object"
+                              },
+                              "related": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "page": {
+                            "required": [
+                              "id",
+                              "title",
+                              "path"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "content": {
+                                "type": "string"
+                              },
+                              "components": {
+                                "type": "dynamiczone"
+                              },
+                              "page": {
+                                "type": "string"
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "isPublic": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "description"
+                  ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
+                        "tiles.header",
+                        "tiles.navigation"
                       ]
                     },
                     "id": {
@@ -609,6 +773,27 @@
                     },
                     "title": {
                       "type": "string"
+                    },
+                    "links": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "url"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "icon": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   },
                   "required": [
@@ -621,27 +806,42 @@
                     "__component": {
                       "type": "string",
                       "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
                         "tiles.header",
-                        "tiles.footer"
+                        "tiles.navigation"
                       ]
                     },
                     "id": {
                       "type": "string"
                     },
-                    "text": {
-                      "type": "string"
+                    "isDarkMode": {
+                      "type": "boolean"
                     },
-                    "backgroundColor": {
-                      "type": "string"
-                    },
-                    "height": {
-                      "type": "integer",
-                      "default": 12
+                    "links": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "url"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "icon": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   },
                   "required": [
-                    "id",
-                    "text"
+                    "id"
                   ]
                 }
               ]
@@ -707,8 +907,172 @@
                     "__component": {
                       "type": "string",
                       "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
                         "tiles.header",
-                        "tiles.footer"
+                        "tiles.navigation"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "backgroundColor": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "integer",
+                      "default": 12
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text"
+                  ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
+                        "tiles.header",
+                        "tiles.navigation"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "alt"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "alt": {
+                            "type": "string"
+                          },
+                          "image": {
+                            "required": [
+                              "id",
+                              "name",
+                              "hash",
+                              "mime",
+                              "size",
+                              "url",
+                              "provider"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "alternativeText": {
+                                "type": "string"
+                              },
+                              "caption": {
+                                "type": "string"
+                              },
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              },
+                              "formats": {
+                                "type": "object"
+                              },
+                              "hash": {
+                                "type": "string"
+                              },
+                              "ext": {
+                                "type": "string"
+                              },
+                              "mime": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "number"
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "previewUrl": {
+                                "type": "string"
+                              },
+                              "provider": {
+                                "type": "string"
+                              },
+                              "provider_metadata": {
+                                "type": "object"
+                              },
+                              "related": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "page": {
+                            "required": [
+                              "id",
+                              "title",
+                              "path"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "content": {
+                                "type": "string"
+                              },
+                              "components": {
+                                "type": "dynamiczone"
+                              },
+                              "page": {
+                                "type": "string"
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "isPublic": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "description"
+                  ]
+                },
+                {
+                  "properties": {
+                    "__component": {
+                      "type": "string",
+                      "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
+                        "tiles.header",
+                        "tiles.navigation"
                       ]
                     },
                     "id": {
@@ -777,6 +1141,27 @@
                     },
                     "title": {
                       "type": "string"
+                    },
+                    "links": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "url"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "icon": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   },
                   "required": [
@@ -789,27 +1174,42 @@
                     "__component": {
                       "type": "string",
                       "enum": [
+                        "tiles.footer",
+                        "tiles.cards-component",
                         "tiles.header",
-                        "tiles.footer"
+                        "tiles.navigation"
                       ]
                     },
                     "id": {
                       "type": "string"
                     },
-                    "text": {
-                      "type": "string"
+                    "isDarkMode": {
+                      "type": "boolean"
                     },
-                    "backgroundColor": {
-                      "type": "string"
-                    },
-                    "height": {
-                      "type": "integer",
-                      "default": 12
+                    "links": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "url"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "icon": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   },
                   "required": [
-                    "id",
-                    "text"
+                    "id"
                   ]
                 }
               ]

@@ -1,10 +1,9 @@
-import { Background } from './page';
+import { ImageObject } from "./image";
+import { IComponentBase } from "./component-base";
 
-export interface IHeaderComponent {
-  __component: string;
-  id: number;
+export interface IHeaderComponent extends IComponentBase {
   title: string;
-  background: Background;
+  background: ImageObject;
 }
 
 
