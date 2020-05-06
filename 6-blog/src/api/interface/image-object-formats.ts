@@ -1,4 +1,4 @@
-interface IImageObjectFormat {
+export interface IImageObjectFormat {
   hash: string;
   ext: string;
   mime: string;

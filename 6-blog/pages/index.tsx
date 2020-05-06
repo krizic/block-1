@@ -9,18 +9,23 @@ import {IFooterComponent} from "../src/api/interface/footer-component";
 import FooterCMS from "../src/cms-components/footer-cms";
 import {ICardsComponent} from "../src/api/interface/cards-component";
 import CardsCMS from "../src/cms-components/cards-cms";
-import { INavigationComponent } from "../src/api/interface/navigation-component";
+import {INavigationComponent} from "../src/api/interface/navigation-component";
 import NavigationCms from "../src/cms-components/navigation-cms";
+import {IBlog} from "../src/api/interface/blog";
+import BlogTeaser from "../src/cms-components/blog-teaser-cms";
+import {Card} from "semantic-ui-react";
 
 export interface IHomeProps {
   page: IPage;
+  blogs: IBlog[];
 }
 
 export default class Home extends React.PureComponent<IHomeProps> {
   static async getInitialProps(): Promise<Partial<IHomeProps>> {
     const pageService = new PageService();
     const pages: IPage[] = await pageService.getPage("home");
-    return {page: pages[0]};
+    const blogs: IBlog[] = await pageService.getBlogs();
+    return {page: pages[0], blogs: blogs};
   }
 
   public render() {
@@ -62,11 +67,9 @@ export default class Home extends React.PureComponent<IHomeProps> {
 
           case ComponentType.navigation:
             const componentNavigation: INavigationComponent = current as INavigationComponent;
-            acc.push(
-                <NavigationCms {...componentNavigation} ></NavigationCms>
-            )
+            acc.push(<NavigationCms {...componentNavigation}></NavigationCms>);
             break;
-            
+
           default:
             break;
         }
@@ -76,9 +79,24 @@ export default class Home extends React.PureComponent<IHomeProps> {
       []
     );
 
+    const blogs: React.ReactElement[] = this.props.blogs.map((blog) => {
+      return (
+        <Card.Group className="blog-cards">
+          <BlogTeaser
+            title={blog.title}
+            author={blog.author}
+            date={blog.date}
+            teaser={blog.teaser}
+            image={blog.image[0]}
+          ></BlogTeaser>
+        </Card.Group>
+      );
+    });
+
     return (
       <>
         {components}
+        {blogs}
 
         {/* <div>{this.props.page.title}</div> */}
       </>

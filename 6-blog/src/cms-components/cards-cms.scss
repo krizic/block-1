@@ -1,6 +1,7 @@
 .teasers {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    margin-bottom: 5rem;
     align-items: center;
 
     .card {
@@ -10,5 +11,18 @@
         background-size: cover;
         justify-content: center;
         align-items: center;
+        background-position: initial;
+    }
+
+
+    a.ui.card:hover {
+        transform: none;
+        background-size: cover;
+    }
+
+    .header {
+        color: black;
+        padding: 10px;
+        background-color: whitesmoke;
     }
 }

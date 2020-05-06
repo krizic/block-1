@@ -1,3 +1,5 @@
+import { IImageObjectFormat } from "./image-object-formats";
+
 export interface ImageObject {
     id: string;
     name: string;
