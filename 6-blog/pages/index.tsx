@@ -11,16 +11,21 @@ import {ICardsComponent} from "../src/api/interface/cards-component";
 import CardsCMS from "../src/cms-components/cards-cms";
 import { INavigationComponent } from "../src/api/interface/navigation-component";
 import NavigationCms from "../src/cms-components/navigation-cms";
+import { MenuService } from "../src/api/menu-service";
+import { IMenu } from "../src/api/interface/menu";
 
 export interface IHomeProps {
   page: IPage;
+  menu: IMenu;
 }
 
 export default class Home extends React.PureComponent<IHomeProps> {
   static async getInitialProps(): Promise<Partial<IHomeProps>> {
     const pageService = new PageService();
+    const menuService = new MenuService();
     const pages: IPage[] = await pageService.getPage("home");
-    return {page: pages[0]};
+    const menu: IMenu[] = await menuService.get();
+    return { page: pages[0], menu: menu[0] };
   }
 
   public render() {
@@ -63,7 +68,7 @@ export default class Home extends React.PureComponent<IHomeProps> {
           case ComponentType.navigation:
             const componentNavigation: INavigationComponent = current as INavigationComponent;
             acc.push(
-                <NavigationCms {...componentNavigation} ></NavigationCms>
+                <NavigationCms {...componentNavigation} menu={this.props.menu}></NavigationCms>
             )
             break;
             
