@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookSquare,
   faTwitterSquare,
@@ -8,9 +8,13 @@ import {
   faPinterestSquare,
 } from "@fortawesome/free-brands-svg-icons";
 
-import {INavigationComponent} from "../api/interface/navigation-component";
+import { MenuComponent } from "../component/menu-component";
+import { INavigationComponent } from "../api/interface/navigation-component";
+import { IMenu } from "../api/interface/menu";
 
-export interface INavigationCmsProps extends INavigationComponent {}
+export interface INavigationCmsProps extends INavigationComponent {
+  menu: IMenu;
+}
 
 export default class NavigationCms extends React.PureComponent<
   INavigationCmsProps
@@ -24,16 +28,23 @@ export default class NavigationCms extends React.PureComponent<
 
   public render() {
     return (
-      <div className="navigation-cms">
-        {this.props.links.map((current) => {
-          return (
-            <div className="icon-item">
-              <a href={current.url}>
-                <FontAwesomeIcon icon={this.fonts[current.icon]} />
-              </a>
-            </div>
-          );
-        })}
+      <div>
+        <div className="social">
+          <div className="navigation-cms">
+            {this.props.links.map((current) => {
+              return (
+                <div className="icon-item">
+                  <a href={current.url}>
+                    <FontAwesomeIcon icon={this.fonts[current.icon]} />
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="menu">
+          <MenuComponent {...this.props.menu}/>
+        </div>
       </div>
     );
   }
