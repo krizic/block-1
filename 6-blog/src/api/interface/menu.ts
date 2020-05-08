@@ -10,6 +10,15 @@ export interface IMenu {
 
 export interface IMenuItem {
     id: number;
-    page: IPage;
+    // show if available as text if not take title from page.title
+    title?: string;
+    page?: IPage;
+    items: ISubMenuItem[]
+}
+
+export interface ISubMenuItem {
+    id: number;
+    title: string;
+    pages?: IPage[];
 }
 

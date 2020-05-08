@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "05/06/2020 4:13:26 PM"
+    "x-generation-date": "05/08/2020 4:40:09 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -3862,60 +3862,52 @@
                 "id": {
                   "type": "string"
                 },
-                "page": {
-                  "required": [
-                    "id",
-                    "title",
-                    "path"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "title": {
-                      "type": "string"
-                    },
-                    "content": {
-                      "type": "string"
-                    },
-                    "components": {
-                      "type": "dynamiczone"
-                    },
-                    "page": {
-                      "type": "string"
-                    },
-                    "path": {
-                      "type": "string"
-                    },
-                    "isPublic": {
-                      "type": "boolean"
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "pages": {
+                        "required": [
+                          "id",
+                          "title",
+                          "path"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "components": {
+                            "type": "dynamiczone"
+                          },
+                          "page": {
+                            "type": "string"
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "isPublic": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "title": {
+                        "type": "string"
+                      }
                     }
                   }
-                }
-              }
-            }
-          }
-        }
-      },
-      "NewMenu": {
-        "required": [
-          "main"
-        ],
-        "properties": {
-          "main": {
-            "type": "boolean",
-            "default": true
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
                 },
                 "page": {
                   "required": [
@@ -3946,6 +3938,114 @@
                       "type": "boolean"
                     }
                   }
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NewMenu": {
+        "required": [
+          "main"
+        ],
+        "properties": {
+          "main": {
+            "type": "boolean",
+            "default": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "pages": {
+                        "required": [
+                          "id",
+                          "title",
+                          "path"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "components": {
+                            "type": "dynamiczone"
+                          },
+                          "page": {
+                            "type": "string"
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "isPublic": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "required": [
+                    "id",
+                    "title",
+                    "path"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "components": {
+                      "type": "dynamiczone"
+                    },
+                    "page": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "isPublic": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "title": {
+                  "type": "string"
                 }
               }
             }

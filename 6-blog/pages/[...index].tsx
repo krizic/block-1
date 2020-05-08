@@ -1,4 +1,5 @@
 import * as React from "react";
+import {Card} from "semantic-ui-react";
 
 import {PageService} from "../src/api/page-service";
 import {IPage} from "../src/api/interface/page";
@@ -13,7 +14,6 @@ import {INavigationComponent} from "../src/api/interface/navigation-component";
 import NavigationCms from "../src/cms-components/navigation-cms";
 import {IBlog} from "../src/api/interface/blog";
 import BlogTeaser from "../src/cms-components/blog-teaser-cms";
-import {Card} from "semantic-ui-react";
 import { MenuService } from "../src/api/menu-service";
 import { IMenu } from "../src/api/interface/menu";
 
@@ -24,18 +24,17 @@ export interface IHomeProps {
 }
 
 export default class Home extends React.PureComponent<IHomeProps> {
-  static async getInitialProps(): Promise<Partial<IHomeProps>> {
+  static async getInitialProps(context): Promise<Partial<IHomeProps>> {
+    console.log("CONTEXT url", context.req.url)
     const pageService = new PageService();
     const menuService = new MenuService();
-    const pages: IPage[] = await pageService.getPage("home");
-    const menu: IMenu[] = await menuService.get();
+    const pages: IPage[] = await pageService.getPage(context.req.url.substring(1));
+    const menu: IMenu[] = await menuService.getMenu();
     const blogs: IBlog[] = await pageService.getBlogs();
-    return {page: pages[0], blogs: blogs};
+    return {page: pages[0], menu: menu[0], blogs: blogs};
   }
 
   public render() {
-    console.log(this.props);
-
     const components: React.ReactElement[] = this.props.page.components.reduce(
       (acc, current) => {
         switch (current.__component) {
@@ -103,7 +102,7 @@ export default class Home extends React.PureComponent<IHomeProps> {
     return (
       <>
         {components}
-        {blogs}
+        {/* {blogs} */}
 
         {/* <div>{this.props.page.title}</div> */}
       </>
