@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_tiles_cards",
+  "info": {
+    "name": "Card",
+    "icon": "address-card"
+  },
+  "options": {},
+  "attributes": {
+    "alt": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "page": {
+      "model": "pages"
+    }
+  }
+}

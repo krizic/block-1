@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_menu_sub_menus",
+  "info": {
+    "name": "SubMenu",
+    "icon": "vector-square"
+  },
+  "options": {},
+  "attributes": {
+    "pages": {
+      "collection": "pages"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}

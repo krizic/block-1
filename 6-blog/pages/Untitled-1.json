@@ -1,0 +1,80 @@
+[
+    {
+      "id": 1,
+      "main": true,
+      "created_at": "2020-05-08T14:23:43.176Z",
+      "updated_at": "2020-05-08T14:23:43.176Z",
+      "items": [
+        {
+          "id": 3,
+          "page": {
+            "id": 1,
+            "title": "Home",
+            "content": "test",
+            "page": null,
+            "path": "home",
+            "isPublic": true,
+            "created_at": "2020-05-04T13:28:37.105Z",
+            "updated_at": "2020-05-08T13:33:52.454Z"
+          },
+          "items": []
+        },
+        {
+          "id": 4,
+          "page": null,
+          "items": [
+            {
+              "id": 2,
+              "title": "Services",
+              "pages": [
+                {
+                  "id": 2,
+                  "title": "Blog",
+                  "content": "This is blog",
+                  "page": null,
+                  "path": "blog",
+                  "isPublic": true,
+                  "created_at": "2020-05-04T14:30:36.639Z",
+                  "updated_at": "2020-05-04T14:30:36.639Z"
+                },
+                {
+                  "id": 3,
+                  "title": "About",
+                  "content": "This is about page",
+                  "page": null,
+                  "path": "about",
+                  "isPublic": true,
+                  "created_at": "2020-05-04T14:31:02.839Z",
+                  "updated_at": "2020-05-04T14:31:02.839Z"
+                },
+                {
+                  "id": 4,
+                  "title": "Vedran",
+                  "content": "sdfsdfsdfsdfdsf sdfsdfdsf ",
+                  "page": null,
+                  "path": "vedran",
+                  "isPublic": true,
+                  "created_at": "2020-05-08T14:00:27.769Z",
+                  "updated_at": "2020-05-08T14:00:52.642Z"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "page": {
+            "id": 3,
+            "title": "About",
+            "content": "This is about page",
+            "page": null,
+            "path": "about",
+            "isPublic": true,
+            "created_at": "2020-05-04T14:31:02.839Z",
+            "updated_at": "2020-05-04T14:31:02.839Z"
+          },
+          "items": []
+        }
+      ]
+    }
+  ]

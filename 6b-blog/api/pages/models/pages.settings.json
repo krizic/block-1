@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "name": "Pages"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "components": {
+      "type": "dynamiczone",
+      "components": [
+        "tiles.footer",
+        "tiles.cards-component",
+        "tiles.header",
+        "tiles.navigation"
+      ]
+    },
+    "page": {
+      "model": "pages"
+    },
+    "path": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "isPublic": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

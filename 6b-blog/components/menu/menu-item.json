@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_menu_menu_items",
+  "info": {
+    "name": "MenuItem",
+    "icon": "align-center"
+  },
+  "options": {},
+  "attributes": {
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "menu.sub-menu"
+    },
+    "page": {
+      "model": "pages"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}

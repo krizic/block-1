@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_tiles_nav_link_items",
+  "info": {
+    "name": "NavLinkItem",
+    "icon": "external-link-alt"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

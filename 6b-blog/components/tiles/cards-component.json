@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_tiles_cards_components",
+  "info": {
+    "name": "CardsComponent",
+    "icon": "id-card-alt"
+  },
+  "options": {},
+  "attributes": {
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tiles.cards"
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

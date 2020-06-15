@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_tiles_header_link_items",
+  "info": {
+    "name": "HeaderLinkItem",
+    "icon": "link"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": [
+        "faFacebookSquare",
+        "faTwitterSquare",
+        "faInstagramSquare",
+        "faPinterestSquare"
+      ]
+    }
+  }
+}

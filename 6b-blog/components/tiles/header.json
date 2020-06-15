@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_tiles_headers",
+  "info": {
+    "name": "Header",
+    "icon": "border-style"
+  },
+  "options": {},
+  "attributes": {
+    "background": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files",
+        "images",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": true
+    },
+    "title": {
+      "type": "string"
+    },
+    "links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tiles.header-link-item"
+    }
+  }
+}

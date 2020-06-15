@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_tiles_footers",
+  "info": {
+    "name": "Footer",
+    "icon": "file-download"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "backgroundColor": {
+      "type": "string"
+    },
+    "height": {
+      "type": "integer",
+      "default": 12
+    }
+  }
+}
