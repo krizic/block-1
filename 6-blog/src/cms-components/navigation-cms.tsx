@@ -29,13 +29,13 @@ export default class NavigationCms extends React.PureComponent<
 
   public render() {
     return (
-      <div>
+      <div className="navigation-wrapper">
         <div className="navigation-cms">
           <div className="social">
             {this.props.links.map((current) => {
               return (
                 <div className="icon-item">
-                  <a href={current.url}>
+                  <a href={current.url} target="_blank">
                     <FontAwesomeIcon icon={this.fonts[current.icon]} />
                   </a>
                 </div>

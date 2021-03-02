@@ -1,6 +1,7 @@
 .teasers {
     display: flex;
     justify-content: space-evenly;
+    margin-top: 2rem;
     margin-bottom: 5rem;
     align-items: center;
 
@@ -14,6 +15,9 @@
         background-position: initial;
     }
 
+    .ui.card {
+        margin: 0
+    }
 
     a.ui.card:hover {
         transform: none;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Card} from "semantic-ui-react";
+import {Card, Item} from "semantic-ui-react";
 
 import {PageService} from "../src/api/page-service";
 import {IPage} from "../src/api/interface/page";
@@ -16,6 +16,7 @@ import {IBlog} from "../src/api/interface/blog";
 import BlogTeaser from "../src/cms-components/blog-teaser-cms";
 import { MenuService } from "../src/api/menu-service";
 import { IMenu } from "../src/api/interface/menu";
+
 
 export interface IHomeProps {
   page: IPage;
@@ -87,7 +88,7 @@ export default class Home extends React.PureComponent<IHomeProps> {
 
     const blogs: React.ReactElement[] = this.props.blogs.map((blog) => {
       return (
-        <Card.Group className="blog-cards">
+        <Item.Group className="blog-cards">
           <BlogTeaser
             title={blog.title}
             author={blog.author}
@@ -95,14 +96,14 @@ export default class Home extends React.PureComponent<IHomeProps> {
             teaser={blog.teaser}
             image={blog.image[0]}
           ></BlogTeaser>
-        </Card.Group>
+        </Item.Group>
       );
     });
 
     return (
       <>
         {components}
-        {/* {blogs} */}
+        {blogs}   
 
         {/* <div>{this.props.page.title}</div> */}
       </>

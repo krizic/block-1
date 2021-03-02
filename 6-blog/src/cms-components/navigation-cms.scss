@@ -1,13 +1,30 @@
+.navigation-wrapper {
+    padding: 0 0.5rem;
+    background-color: lightgray;
+
 .navigation-cms {
     display: flex;
-    background-color: lightgray;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    max-width: 960px;
+    margin: 0 auto;
+
+    .social {
+        display: flex;
+    }
 
     .icon-item {  
         a {
             color: #444;
         }  
         
+        &:first-child{
+            padding-left: 0;
+        }
         font-size: 2rem;
         padding-left: 20px;
     }
+}
+
 }
